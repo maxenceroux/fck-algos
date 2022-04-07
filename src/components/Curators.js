@@ -1,22 +1,45 @@
 import React from "react";
+import Chip from "@mui/material/Chip";
 
-function Curators({ curators, curatorFilters }) {
+function Curators({
+  curators,
+  addCuratorFiltersSelection,
 
+  albumColor,
+}) {
+  return (
+    <div className="curators">
+      <p className="recommended-by">curated by:</p>
+      {Object.keys(curators).map((value) => {
+        return (
+          <div className="curators-card">
+            <Chip
+              key={curators[value]["display_name"]}
+              size="small"
+              label={curators[value]["display_name"]}
+              sx={{
+                bgcolor: albumColor,
+                color: "black",
+                fontSize: "14px",
+                marginRight: "10px",
+                marginLeft: "10px",
+                marginBottom: "10px",
+                marginTop: "10px",
 
-    return (
-        <div className="curators">
-            <h3>Curators</h3>
-            {Object.keys(curators).map((value) => {
-                return (
-                    <div className="curators-card">
-                        <button key={curators[value]["display_name"]} onClick={() => curatorFilters(curators[value]["display_name"])}>{curators[value]["display_name"]}</button>
-                    </div>
-                );
-            })}
-
-        </div>
-
-    );
+                fontFamily: "Cotham",
+                "&:hover": {
+                  backgroundColor: "white",
+                },
+              }}
+              onClick={() =>
+                addCuratorFiltersSelection(curators[value]["display_name"])
+              }
+            />
+          </div>
+        );
+      })}
+    </div>
+  );
 }
 
 export default Curators;
