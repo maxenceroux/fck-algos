@@ -1,13 +1,15 @@
 import React from "react";
+import GenreFilters from "./GenreFilters";
+import CuratorFilters from "./CuratorFilters";
 
-function Filters({ filters }) {
+function Filters({ filters, filtersSelection, curatorFilters, curatorFiltersSelection }) {
 
 
     return (
         <div className="filters">
-            {filters.map((index) => (
-                <p> {index} </p>
-            ))}
+            <GenreFilters filters={filters} filtersSelection={filtersSelection} />
+            <CuratorFilters curatorFilters={curatorFilters} curatorFiltersSelection={curatorFiltersSelection} />
+
         </div>
 
     );

@@ -1,38 +1,96 @@
-.App {
-  text-align: center;
+@font-face {
+  font-family: 'Sanchez-Regular';
+  src: local('Sanchez-Regular'), url(/public/fonts/otf/Combat.otf) format('truetype');
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+html {
+  height: 100%;
+  background-color: black;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+body {
+  height: 100%;
+  margin: 0;
+  font-family: Sanchez-Regular;
+
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.page {
+  display: flex;
+
+  height: calc(100vh - 30px);
+}
+
+.sidebar {
+  width: 200px;
+  display: flex;
+}
+
+.content {
   display: flex;
   flex-direction: column;
+  flex: 1 0 auto;
+  left: 50%;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
 }
 
-.App-link {
-  color: #61dafb;
+
+.App-header {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.album-image {
+  object-fit: scale-down;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.album {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.album-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.album-name {
+  display: flex;
+  align-items: center;
+  font-size: 26px;
+  justify-content: center;
+}
+
+.artist-name {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  justify-content: center;
+}
+
+.button {
+
+  border: none;
+  position: fixed;
+  bottom: 10%;
+  font-family: Sanchez-Regular;
+  color: black;
+  padding: 15px 50px;
+  text-decoration: none;
+  font-size: 20px;
+
+}
+
+.genres {
+  display: flex;
 }
