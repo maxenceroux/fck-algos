@@ -5,6 +5,7 @@ import axios from "axios";
 import Curators from "./components/Curators";
 import Sidebar from "./components/Sidebar";
 import "./App.css";
+
 import Header from "./components/Header";
 
 function App() {
@@ -15,6 +16,8 @@ function App() {
   const [curators, setCurators] = useState([]);
   const [curatorsFilter, setCuratorsFilters] = useState([]);
   const [albumEmbedUrl, setAlbumEmbedUrl] = useState([]);
+  const [linearGradient, setLinearGradient] = useState([]);
+  const [linearGradientButton, setLinearGradientButton] = useState([]);
   const addGenreFilters = (newFilter) => {
     if (!filters.includes(newFilter)) {
       setFilters((filters) => [...filters, newFilter]);
@@ -69,6 +72,21 @@ function App() {
         album_data.data.spotify_id;
       const curator_data = await axios.get(curator_url);
       setCurators(curator_data.data);
+      const linGrad =
+        "linear-gradient(" +
+        album_data.data.primary_color +
+        "," +
+        album_data.data.secondary_color +
+        " 40%)";
+      const linGradBut =
+        "linear-gradient(" +
+        album_data.data.secondary_color +
+        "," +
+        album_data.data.primary_color +
+        " 40%)";
+
+      setLinearGradient(linGrad);
+      setLinearGradientButton(linGradBut);
     };
     fetchData();
   }, []);
@@ -82,7 +100,6 @@ function App() {
     const album_data = await axios.get("http://localhost:8000/random_album", {
       params,
     });
-    console.log(album_data);
     setAlbum(album_data.data);
     const album_embed_url =
       "https://open.spotify.com/embed/album/" +
@@ -98,15 +115,35 @@ function App() {
       album_data.data.spotify_id;
     const curator_data = await axios.get(curator_url);
     setCurators(curator_data.data);
-    console.log(filters);
+
+    const linGrad =
+      "linear-gradient(" +
+      album_data.data.primary_color +
+      "," +
+      album_data.data.secondary_color +
+      " 40%)";
+    const linGradBut =
+      "linear-gradient(" +
+      album_data.data.secondary_color +
+      "," +
+      album_data.data.primary_color +
+      " 40%)";
+    setLinearGradient(linGrad);
+    setLinearGradientButton(linGradBut);
+    console.log(album.image_url);
   };
 
   return (
-    <div style={{ color: album.dominant_color }} className="App">
+    <div style={{ color: album.primary_color }} className="App">
       <header className="App-header">
-        <Header albumColor={album.dominant_color} />
+        <Header albumColor={album.primary_color} />
       </header>
-      <div className="page">
+      <div
+        style={{
+          backgroundImage: linearGradient,
+        }}
+        className="page"
+      >
         <Sidebar
           filters={filters}
           addGenreFiltersSelection={addGenreFilters}
@@ -115,20 +152,22 @@ function App() {
           addCuratorFiltersSelection={addCuratorFilters}
           removeCuratorFiltersSelection={removeCuratorFilters}
           clickBehavior={handleClick}
-          albumColor={album.dominant_color}
+          albumColor={album.primary_color}
           albumEmbedUrl={albumEmbedUrl}
+          linearGradient={linearGradientButton}
         />
         <div className="content">
+          <div className="bgd" />
           <Album album={album} />
           <Genres
             styles={styles}
             addGenreFiltersSelection={addGenreFilters}
-            albumColor={album.dominant_color}
+            albumColor={album.primary_color}
           />
           <Curators
             curators={curators}
             addCuratorFiltersSelection={addCuratorFilters}
-            albumColor={album.dominant_color}
+            albumColor={album.primary_color}
           />
         </div>
       </div>

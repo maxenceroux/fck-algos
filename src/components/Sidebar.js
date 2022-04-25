@@ -1,7 +1,6 @@
 import React from "react";
 import Filters from "./Filters";
-import Button from "@mui/material/Button";
-
+import { ReactComponent as Oid } from "../oid.svg";
 function Sidebar({
   filters,
   addGenreFiltersSelection,
@@ -12,9 +11,19 @@ function Sidebar({
   clickBehavior,
   albumColor,
   albumEmbedUrl,
+  linearGradient,
 }) {
   return (
     <div className="sidebar">
+      <svg className="logo" fill={albumColor}>
+        <Oid />
+      </svg>
+      <h1
+        className="title"
+        style={{ color: albumColor, fontFamily: "Sanchez-Regular" }}
+      >
+        &nbsp; &nbsp; &nbsp; &nbsp;Algo <br /> Rhythms
+      </h1>
       <Filters
         filters={filters}
         addGenreFiltersSelection={addGenreFiltersSelection}
@@ -25,21 +34,13 @@ function Sidebar({
         albumColor={albumColor}
       />
       <div className="button">
-        <Button
-          style={{ background: albumColor }}
-          sx={{
-            fontFamily: "Sanchez-Regular",
-            fontSize: "20px",
-            color: "white",
-            padding: "10px 30px",
-            textTransform: "none",
-          }}
-          className="button"
+        <button
+          style={{ backgroundImage: linearGradient }}
+          className="btn-grad"
           onClick={clickBehavior}
-          variant="contained"
         >
-          next
-        </Button>
+          Next
+        </button>
       </div>
 
       <div className="spotify-embed">
