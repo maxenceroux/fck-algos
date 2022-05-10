@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Album from "./components/Album";
 import Genres from "./components/Genres";
+import Profile from "./components/Profile";
 import axios from "axios";
 import Curators from "./components/Curators";
 import Sidebar from "./components/Sidebar";
@@ -136,7 +137,7 @@ function App() {
   return (
     <div style={{ color: album.primary_color }} className="App">
       <header className="App-header">
-        <Header albumColor={album.primary_color} />
+        <Header />
       </header>
       <div
         style={{

@@ -35,6 +35,10 @@ body {
   flex: 1 1 100%;
 }
 
+.profile {
+  color: black;
+  background-color: beige;
+}
 .sidebar {
   width: 500px;
   display: flex;
@@ -65,7 +69,7 @@ body {
   font-family: "Cotham" sans-serif;
 }
 .App-header {
-  height: 100px;
+  height: 200px;
   display: flex;
   margin-top: 10px;
   align-items: stretch;
@@ -74,8 +78,9 @@ body {
 .header {
   display: flex;
   align-items: center;
+  /* flex-direction: column; */
 }
-.about-us {
+.header-content {
   position: absolute;
   text-decoration: underline;
   right: 0px;
@@ -173,6 +178,10 @@ body {
   flex: 1;
 }
 
+.navigation {
+  display: flex;
+  flex-direction: row;
+}
 .logo {
   position: relative;
   top: 52px;
