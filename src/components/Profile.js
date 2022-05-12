@@ -1,9 +1,19 @@
 import React from "react";
 import Header from "./Header";
-import { useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 function Profile({}) {
-  const location = useLocation();
-  const from = location.state;
+  const [user, setUser] = useState();
+  const [userURL, setUserURL] = useState();
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("user");
+    const loggedInUserURL = localStorage.getItem("user_image_url");
+    if (loggedInUser) {
+      const foundUser = loggedInUser;
+      setUser(foundUser);
+      setUserURL(loggedInUserURL);
+    }
+    console.log(loggedInUserURL);
+  }, []);
 
   return (
     <div className="profile">
@@ -12,9 +22,10 @@ function Profile({}) {
       </header>
       <div>Profile</div>
       <div>
-        {/* {from.data.display_name ? <p>{from.data.display_name} </p> : <p />} */}
+        {user ? <p>{user} </p> : <p> no </p>}
         Profile2
       </div>
+      <div>{userURL ? <img src={userURL} /> : <p> no </p>}</div>
     </div>
   );
 }

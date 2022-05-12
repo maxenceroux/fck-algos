@@ -39,7 +39,7 @@ function Header() {
       setTokenType(token_type);
       setExpiresIn(expires_in);
     }
-    if (!profile) {
+    if (!localStorage.getItem("user")) {
       const fetchProfileData = async () => {
         const profile_url = "https://api.spotify.com/v1/me";
         const bearerToken = "Bearer " + accessToken;
@@ -51,21 +51,19 @@ function Header() {
           headers: headers,
         });
         setProfile(profile_data);
+        console.log(profile_data);
+        localStorage.setItem("user", profile_data.data.display_name);
+        localStorage.setItem("user_image_url", profile_data.data.images[0].url);
       };
       fetchProfileData();
-      console.log("fetching");
-      console.log(profile);
     }
-
-    // localStorage.clear();
-
-    // localStorage.setItem("accessToken", access_token);
-    // localStorage.setItem("tokenType", token_type);
-    // localStorage.setItem("expiresIn", expires_in);
   });
 
   const handleLogin = () => {
     window.location = `${SPOTIFY_AUTHORIZE_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URL_AFTER_LOGIN}&scope=${SCOPES_URL_PARAM}&response_type=token&show_dialog=true`;
+  };
+  const handleLogout = () => {
+    localStorage.clear();
   };
 
   return (
@@ -77,7 +75,12 @@ function Header() {
           </nav>
         </div>
         <div className="login">
-          <button onClick={handleLogin}> Login</button>
+          {" "}
+          {localStorage.getItem("user") ? (
+            <button onClick={handleLogout}> Logout</button>
+          ) : (
+            <button onClickCapture={handleLogin}> Login</button>
+          )}
         </div>
         <div>{profile ? <p>{profile.data.display_name}</p> : <p />}</div>
         <div className="about-us">
