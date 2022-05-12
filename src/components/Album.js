@@ -1,5 +1,5 @@
 import React from "react";
-
+import { ReactComponent as Vinyl } from "../vinyl.svg";
 const Album = ({ album }) => {
   return (
     <div className="album">
@@ -9,6 +9,12 @@ const Album = ({ album }) => {
       <div className="album-info">
         <div className="album-name">{album.name}</div>
         <div className="artist-name">{album.artist_name}</div>
+        <div className="label">
+          <svg className="vinyl" fill={album.primary_color}>
+            <Vinyl />
+          </svg>
+          <a>{album.label}</a>
+        </div>
       </div>
     </div>
   );
