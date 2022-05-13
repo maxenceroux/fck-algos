@@ -15,9 +15,24 @@ function App() {
   const [filters, setFilters] = useState([]);
   const [curators, setCurators] = useState([]);
   const [curatorsFilter, setCuratorsFilters] = useState([]);
+  const [labelFilter, setLabelFilter] = useState("");
   const [albumEmbedUrl, setAlbumEmbedUrl] = useState([]);
   const [linearGradient, setLinearGradient] = useState([]);
   const [linearGradientButton, setLinearGradientButton] = useState([]);
+  const addLabelFilter = (newLabelFilter) => {
+    console.log(labelFilter);
+    if (typeof labelFilter === "undefined") {
+      console.log(newLabelFilter);
+      setLabelFilter(newLabelFilter);
+    }
+    if (typeof labelFilter !== "undefined") {
+      console.log(newLabelFilter);
+      setLabelFilter(newLabelFilter);
+    }
+  };
+  const removeLabelFilter = (newLabelFilter) => {
+    setLabelFilter("");
+  };
   const addGenreFilters = (newFilter) => {
     if (!filters.includes(newFilter)) {
       setFilters((filters) => [...filters, newFilter]);
@@ -151,6 +166,9 @@ function App() {
           curatorFilters={curatorsFilter}
           addCuratorFiltersSelection={addCuratorFilters}
           removeCuratorFiltersSelection={removeCuratorFilters}
+          labelFilter={labelFilter}
+          addLabelFilterSelection={addLabelFilter}
+          removeLabelFilterSelection={removeLabelFilter}
           clickBehavior={handleClick}
           albumColor={album.primary_color}
           albumEmbedUrl={albumEmbedUrl}
@@ -158,7 +176,7 @@ function App() {
         />
         <div className="content">
           <div className="bgd" />
-          <Album album={album} />
+          <Album album={album} addLabelFilterSelection={addLabelFilter} />
           <Genres
             styles={styles}
             addGenreFiltersSelection={addGenreFilters}

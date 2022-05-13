@@ -1,6 +1,6 @@
 import React from "react";
 import { ReactComponent as Vinyl } from "../vinyl.svg";
-const Album = ({ album }) => {
+const Album = ({ album, addLabelFilterSelection }) => {
   return (
     <div className="album">
       <div className="album-image-wrapper">
@@ -9,7 +9,10 @@ const Album = ({ album }) => {
       <div className="album-info">
         <div className="album-name">{album.name}</div>
         <div className="artist-name">{album.artist_name}</div>
-        <div className="label">
+        <div
+          onClick={() => addLabelFilterSelection(album.label)}
+          className="label"
+        >
           <svg className="vinyl" fill={album.primary_color}>
             <Vinyl />
           </svg>

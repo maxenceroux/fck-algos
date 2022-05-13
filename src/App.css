@@ -185,6 +185,7 @@ body {
   display: flex;
   align-items: center;
   cursor: pointer;
+  margin-bottom: 10px;
 }
 .vinyl {
   max-width: 25px;

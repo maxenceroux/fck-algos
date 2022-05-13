@@ -1,7 +1,7 @@
 import React from "react";
 import GenreFilters from "./GenreFilters";
 import CuratorFilters from "./CuratorFilters";
-
+import LabelFilter from "./LabelFilter";
 function Filters({
   filters,
   addGenreFiltersSelection,
@@ -9,6 +9,9 @@ function Filters({
   curatorFilters,
   addCuratorFiltersSelection,
   removeCuratorFiltersSelection,
+  labelFilter,
+  addLabelFilterSelection,
+  removeLabelFilterSelection,
   albumColor,
 }) {
   return (
@@ -35,6 +38,17 @@ function Filters({
         removeCuratorFiltersSelection={removeCuratorFiltersSelection}
         albumColor={albumColor}
       />
+      {labelFilter !== "" ? <p className="filter-wrapper">Label</p> : ""}
+      {labelFilter !== "" ? (
+        <LabelFilter
+          labelFilter={labelFilter}
+          addLabelFilterSelection={addLabelFilterSelection}
+          removeLabelFilterSelection={removeLabelFilterSelection}
+          albumColor={albumColor}
+        />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

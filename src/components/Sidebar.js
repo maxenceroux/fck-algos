@@ -8,6 +8,9 @@ function Sidebar({
   curatorFilters,
   addCuratorFiltersSelection,
   removeCuratorFiltersSelection,
+  labelFilter,
+  addLabelFilterSelection,
+  removeLabelFilterSelection,
   clickBehavior,
   albumColor,
   albumEmbedUrl,
@@ -31,6 +34,9 @@ function Sidebar({
         curatorFilters={curatorFilters}
         addCuratorFiltersSelection={addCuratorFiltersSelection}
         removeCuratorFiltersSelection={removeCuratorFiltersSelection}
+        labelFilter={labelFilter}
+        addLabelFilterSelection={addLabelFilterSelection}
+        removeLabelFilterSelection={removeLabelFilterSelection}
         albumColor={albumColor}
       />
       <div className="button">
