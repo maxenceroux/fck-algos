@@ -110,6 +110,7 @@ function App() {
     const params = {
       styles: filters.join(","),
       curator: curatorsFilter.join(","),
+      label: labelFilter,
       current_album_id: album.id,
     };
     const album_data = await axios.get("http://localhost:8000/random_album", {
