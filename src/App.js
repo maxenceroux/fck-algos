@@ -21,13 +21,10 @@ function App() {
   const [linearGradient, setLinearGradient] = useState([]);
   const [linearGradientButton, setLinearGradientButton] = useState([]);
   const addLabelFilter = (newLabelFilter) => {
-    console.log(labelFilter);
     if (typeof labelFilter === "undefined") {
-      console.log(newLabelFilter);
       setLabelFilter(newLabelFilter);
     }
     if (typeof labelFilter !== "undefined") {
-      console.log(newLabelFilter);
       setLabelFilter(newLabelFilter);
     }
   };
@@ -147,7 +144,6 @@ function App() {
       " 40%)";
     setLinearGradient(linGrad);
     setLinearGradientButton(linGradBut);
-    console.log(album.image_url);
   };
 
   return (

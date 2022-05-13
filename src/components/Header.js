@@ -8,11 +8,7 @@ const CLIENT_ID = "b45b68c4c7a0421589605adf1e1a7626"; // insert your client id h
 const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
 const REDIRECT_URL_AFTER_LOGIN = "http://localhost:3000/profile";
 const SPACE_DELIMITER = "%20";
-const SCOPES = [
-  "user-read-currently-playing",
-  "user-read-playback-state",
-  "playlist-read-private",
-];
+const SCOPES = ["user-library-read"];
 const SCOPES_URL_PARAM = SCOPES.join(SPACE_DELIMITER);
 
 const getReturnedParamsFromSpotifyAuth = (hash) => {
@@ -51,9 +47,9 @@ function Header() {
           headers: headers,
         });
         setProfile(profile_data);
-        console.log(profile_data);
         localStorage.setItem("user", profile_data.data.display_name);
         localStorage.setItem("user_image_url", profile_data.data.images[0].url);
+        localStorage.setItem("user_spotify_token", accessToken);
       };
       fetchProfileData();
     }
@@ -64,6 +60,7 @@ function Header() {
   };
   const handleLogout = () => {
     localStorage.clear();
+    window.location.reload();
   };
 
   return (
@@ -82,7 +79,6 @@ function Header() {
             <button onClickCapture={handleLogin}> Login</button>
           )}
         </div>
-        <div>{profile ? <p>{profile.data.display_name}</p> : <p />}</div>
         <div className="about-us">
           <a>About us</a>
         </div>
