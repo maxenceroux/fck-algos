@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import Album from "./components/Album";
 import Genres from "./components/Genres";
-import Profile from "./components/Profile";
 import axios from "axios";
 import Curators from "./components/Curators";
+import Modal from "./components/modal/Modal";
 import Sidebar from "./components/Sidebar";
 import "./App.css";
 
@@ -13,6 +13,7 @@ function App() {
   const [album, setAlbum] = useState([]);
 
   const [styles, setStyles] = useState([]);
+  const [modal, setModal] = useState(false);
   const [filters, setFilters] = useState([]);
   const [curators, setCurators] = useState([]);
   const [curatorsFilter, setCuratorsFilters] = useState([]);
@@ -114,36 +115,42 @@ function App() {
     const album_data = await axios.get("http://localhost:8000/random_album", {
       params,
     });
-    setAlbum(album_data.data);
-    const album_embed_url =
-      "https://open.spotify.com/embed/album/" +
-      album_data.data.spotify_id +
-      "?utm_source=generator";
-    setAlbumEmbedUrl(album_embed_url);
-    const style_url =
-      "http://localhost:8000/album_style_genre?album_id=" + album_data.data.id;
-    const style_data = await axios.get(style_url);
-    setStyles(style_data.data["style"]);
-    const curator_url =
-      "http://localhost:8000/album_curators?album_id=" +
-      album_data.data.spotify_id;
-    const curator_data = await axios.get(curator_url);
-    setCurators(curator_data.data);
+    if (album_data.data) {
+      setAlbum(album_data.data);
+      console.log(album_data);
+      const album_embed_url =
+        "https://open.spotify.com/embed/album/" +
+        album_data.data.spotify_id +
+        "?utm_source=generator";
+      setAlbumEmbedUrl(album_embed_url);
+      const style_url =
+        "http://localhost:8000/album_style_genre?album_id=" +
+        album_data.data.id;
+      const style_data = await axios.get(style_url);
+      setStyles(style_data.data["style"]);
+      const curator_url =
+        "http://localhost:8000/album_curators?album_id=" +
+        album_data.data.spotify_id;
+      const curator_data = await axios.get(curator_url);
+      setCurators(curator_data.data);
 
-    const linGrad =
-      "linear-gradient(" +
-      album_data.data.primary_color +
-      "," +
-      album_data.data.secondary_color +
-      " 40%)";
-    const linGradBut =
-      "linear-gradient(" +
-      album_data.data.secondary_color +
-      "," +
-      album_data.data.primary_color +
-      " 40%)";
-    setLinearGradient(linGrad);
-    setLinearGradientButton(linGradBut);
+      const linGrad =
+        "linear-gradient(" +
+        album_data.data.primary_color +
+        "," +
+        album_data.data.secondary_color +
+        " 40%)";
+      const linGradBut =
+        "linear-gradient(" +
+        album_data.data.secondary_color +
+        "," +
+        album_data.data.primary_color +
+        " 40%)";
+      setLinearGradient(linGrad);
+      setLinearGradientButton(linGradBut);
+    } else {
+      setModal(true);
+    }
   };
 
   return (
@@ -173,6 +180,12 @@ function App() {
           linearGradient={linearGradientButton}
         />
         <div className="content">
+          {modal && (
+            <Modal
+              setOpenModal={setModal}
+              linearGradient={linearGradientButton}
+            />
+          )}
           <div className="bgd" />
           <Album album={album} addLabelFilterSelection={addLabelFilter} />
           <Genres
