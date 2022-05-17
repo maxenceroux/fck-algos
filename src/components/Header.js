@@ -37,18 +37,18 @@ function Header() {
     }
     if (!localStorage.getItem("user")) {
       const fetchProfileData = async () => {
-        const profile_url = "https://api.spotify.com/v1/me";
-        const bearerToken = "Bearer " + accessToken;
-        const headers = {
-          "Content-Type": "application/json",
-          Authorization: bearerToken,
+        const profile_url = "http://localhost:8000/spotify_user_info";
+        const params = {
+          token: accessToken,
         };
         const profile_data = await axios.get(profile_url, {
-          headers: headers,
+          params,
         });
         setProfile(profile_data);
+        console.log(profile_data);
         localStorage.setItem("user", profile_data.data.display_name);
-        localStorage.setItem("user_image_url", profile_data.data.images[0].url);
+        localStorage.setItem("user_id", profile_data.data.id);
+        localStorage.setItem("user_image_url", profile_data.data.image_url);
         localStorage.setItem("user_spotify_token", accessToken);
       };
       fetchProfileData();
