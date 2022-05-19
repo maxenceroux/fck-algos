@@ -5,7 +5,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import Search from "./Search";
 
-const CLIENT_ID = "b45b68c4c7a0421589605adf1e1a7626"; // insert your client id here from spotify
+const CLIENT_ID = "b45b68c4c7a0421589605adf1e1a7626";
 const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
 const REDIRECT_URL_AFTER_LOGIN = "http://localhost:3000/profile";
 const SPACE_DELIMITER = "%20";

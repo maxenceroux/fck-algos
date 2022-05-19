@@ -68,7 +68,17 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       const album_url = "http://localhost:8000/random_album";
-      const album_data = await axios.get(album_url);
+      var userID = -1;
+      if (localStorage.getItem("user_id")) {
+        userID = localStorage.getItem("user_id");
+      }
+
+      const params = {
+        user_id: userID,
+      };
+      const album_data = await axios.get(album_url, {
+        params,
+      });
       setAlbum(album_data.data);
       const album_embed_url =
         "https://open.spotify.com/embed/album/" +
@@ -106,11 +116,17 @@ function App() {
   }, []);
 
   const handleClick = async () => {
+    var userID = -1;
+    if (localStorage.getItem("user_id")) {
+      userID = localStorage.getItem("user_id");
+    }
+
     const params = {
       styles: filters.join(","),
       curator: curatorsFilter.join(","),
       label: labelFilter,
       current_album_id: album.id,
+      user_id: userID,
     };
     const album_data = await axios.get("http://localhost:8000/random_album", {
       params,
