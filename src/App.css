@@ -70,6 +70,10 @@ body {
   justify-content: center;
 }
 
+.search {
+  color: white;
+  margin-top: 30px;
+}
 .recommended-by {
   font-size: 18px;
   color: black;
@@ -242,4 +246,8 @@ body {
   background-position: bottom top; /* change the direction of the change here */
   color: #fff;
   text-decoration: none;
+}
+
+.user {
+  color: #fff;
 }

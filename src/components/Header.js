@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import { useEffect } from "react";
+import Search from "./Search";
 
 const CLIENT_ID = "b45b68c4c7a0421589605adf1e1a7626"; // insert your client id here from spotify
 const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
@@ -66,6 +67,7 @@ function Header() {
   return (
     <div className="header">
       <div className="header-content">
+        <Search />
         <div className="navigation">
           <nav>
             <Link to="/">Home</Link> | <Link to="/profile">Profile</Link>

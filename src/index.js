@@ -2,6 +2,8 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import Profile from "./components/Profile";
+import Search from "./components/Search";
+import User from "./components/User";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
@@ -9,11 +11,10 @@ ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/">
-                  <App />
-                </Route> */}
         <Route path="/" element={<App />}></Route>
         <Route path="/profile" element={<Profile />}></Route>
+        <Route path="/search" element={<Search />}></Route>
+        <Route path="/user/:id" element={<User />}></Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
