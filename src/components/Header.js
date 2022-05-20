@@ -36,7 +36,7 @@ function Header() {
       setTokenType(token_type);
       setExpiresIn(expires_in);
     }
-    if (!localStorage.getItem("user")) {
+    if (!localStorage.getItem("user") && accessToken) {
       const fetchProfileData = async () => {
         const profile_url = "http://localhost:8000/spotify_user_info";
         const params = {
