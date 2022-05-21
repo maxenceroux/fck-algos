@@ -1,6 +1,7 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Switch from "@mui/material/Switch";
 import FormGroup from "@mui/material/FormGroup";
@@ -10,7 +11,11 @@ function User({}) {
   const { id } = useParams();
   const [user, setUser] = useState({});
   const [isFollowing, setIsFollowing] = useState(false);
+  const navigate = useNavigate();
   const handleChange = () => {
+    if (!localStorage.getItem("user_id")) {
+      navigate("/login");
+    }
     const url = "http://localhost:8000/follow";
     const params = {
       follower_id: localStorage.getItem("user_id"),
@@ -50,7 +55,7 @@ function User({}) {
         setIsFollowing(response.data);
       });
     };
-    if (user.id) {
+    if (user.id && localStorage.getItem("user_spotify_token")) {
       fetchFollow();
     }
   });
