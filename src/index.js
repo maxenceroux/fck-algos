@@ -4,8 +4,10 @@ import App from "./App";
 import Profile from "./components/Profile";
 import Search from "./components/Search";
 import User from "./components/User";
+import Login from "./components/Login";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import LoginSuccessful from "./components/LoginSuccessful";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -15,6 +17,8 @@ ReactDOM.render(
         <Route path="/profile" element={<Profile />}></Route>
         <Route path="/search" element={<Search />}></Route>
         <Route path="/user/:id" element={<User />}></Route>
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/login/success" element={<LoginSuccessful />}></Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
