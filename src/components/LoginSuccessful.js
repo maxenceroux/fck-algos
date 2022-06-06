@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const getReturnedParamsFromSpotifyAuth = (hash) => {
   const stringAfterHashtag = hash.substring(1);
   const paramsInUrl = stringAfterHashtag.split("&");
@@ -21,6 +22,20 @@ function LoginSuccessful({}) {
       );
 
       localStorage.setItem("user_spotify_token", access_token);
+      const fetchProfileData = async () => {
+        const profile_url = "http://localhost:8000/spotify_user_info";
+        const params = {
+          token: access_token,
+        };
+        const profile_data = await axios.get(profile_url, {
+          params,
+        });
+
+        localStorage.setItem("user", profile_data.data.display_name);
+        localStorage.setItem("user_id", profile_data.data.id);
+        localStorage.setItem("user_image_url", profile_data.data.image_url);
+      };
+      fetchProfileData();
     }
   });
   return (
