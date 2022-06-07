@@ -5,6 +5,7 @@ import Switch from "@mui/material/Switch";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import axios from "axios";
+import { Link } from "react-router-dom";
 function Profile({}) {
   const [user, setUser] = useState();
   const [userURL, setUserURL] = useState();
@@ -63,8 +64,9 @@ function Profile({}) {
           <div>
             <img src={userURL} />
             <p>{user.data.display_name}</p>
-            <p>{user.data.follower_count} followers</p>
-            <p>{user.data.following_count} following</p>
+            <Link to="/followers">{user.data.follower_count} followers</Link>
+            <div />
+            <Link to="/following">{user.data.following_count} following</Link>
 
             <FormGroup>
               {user ? (

@@ -251,6 +251,12 @@ body {
 .user {
   color: #fff;
 }
+.followers {
+  color: #fff;
+}
+.following {
+  color: #fff;
+}
 
 .login-success {
   color: #fff;

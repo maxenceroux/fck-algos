@@ -8,6 +8,8 @@ import Login from "./components/Login";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginSuccessful from "./components/LoginSuccessful";
+import Following from "./components/Following";
+import Followers from "./components/Followers";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -19,6 +21,8 @@ ReactDOM.render(
         <Route path="/user/:id" element={<User />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/login/success" element={<LoginSuccessful />}></Route>
+        <Route path="/following" element={<Following />}></Route>
+        <Route path="/followers" element={<Followers />}></Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
