@@ -1,22 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const getReturnedParamsFromSpotifyAuth = (href) => {
   const code = href.split("code=")[1];
-  console.log(code);
 
   return code;
 };
 function LoginSuccessful({}) {
+  const [hasToken, setHasToken] = useState(false);
+  const [hasProfile, setHasProfile] = useState(false);
+  const [hasUpdate, setHasUpdate] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (window.location.href) {
-      console.log("hsd");
       const code = getReturnedParamsFromSpotifyAuth(window.location.href);
-      console.log(code);
+
       var qs = require("qs");
-      const getToken = async () => {
+      const getToken = () => {
         const url = "https://accounts.spotify.com/api/token";
         const data = qs.stringify({
           grant_type: "authorization_code",
@@ -33,32 +34,68 @@ function LoginSuccessful({}) {
           },
           data: data,
         };
-        console.log(axiosConfig);
-        const response = await axios(axiosConfig).catch(function (error) {
-          console.log(error.response.data);
-        });
-        localStorage.setItem("user_spotify_token", response.data.access_token);
-        localStorage.setItem("user_refresh_token", response.data.refresh_token);
+
+        axios(axiosConfig)
+          .then((response) => {
+            localStorage.setItem(
+              "user_spotify_token",
+              response.data.access_token
+            );
+            localStorage.setItem(
+              "user_refresh_token",
+              response.data.refresh_token
+            );
+
+            setHasToken(true);
+          })
+          .catch(function (error) {
+            console.log(error.response.data);
+          });
       };
-      getToken();
-      const fetchProfileData = async () => {
+      if (!hasToken) {
+        getToken();
+      }
+      const fetchProfileData = () => {
         const profile_url = "http://localhost:8000/spotify_user_info";
         const params = {
           token: localStorage.getItem("user_spotify_token"),
         };
-        const profile_data = await axios.get(profile_url, {
-          params,
-        });
-
-        localStorage.setItem("user", profile_data.data.display_name);
-        localStorage.setItem("user_id", profile_data.data.id);
-        localStorage.setItem("user_image_url", profile_data.data.image_url);
+        axios
+          .get(profile_url, {
+            params,
+          })
+          .then((response) => {
+            localStorage.setItem("user", response.data.display_name);
+            localStorage.setItem("user_id", response.data.id);
+            localStorage.setItem("user_image_url", response.data.image_url);
+            setHasProfile(true);
+          })
+          .catch(function (error) {
+            console.log(error.response.data);
+          });
       };
-      if (localStorage.getItem("user_spotify_token")) {
+      if (hasToken && !hasProfile) {
         fetchProfileData();
+      }
+      const updateToken = () => {
+        const url = "http://localhost:8000/user_spotify_token";
+        const data = {
+          user_id: localStorage.getItem("user_id"),
+          token: localStorage.getItem("user_spotify_token"),
+          refresh_token: localStorage.getItem("user_refresh_token"),
+        };
+        console.log(data);
+        axios.post(url, {}, { params: data }).catch(function (error) {
+          console.log(error.response.data);
+        });
+        setHasUpdate(true);
+      };
+      if (hasProfile && !hasUpdate) {
+        updateToken();
       }
     }
   });
+
   return (
     <div className="login-success">
       success
