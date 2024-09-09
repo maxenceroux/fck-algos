@@ -39,7 +39,7 @@ function Search({}) {
             />
           )}
           getOptionLabel={(option) => option.display_name}
-          style={{ width: 270, color: "#fff" }}
+          style={{ width: 750, color: "#fff" }}
           value={selectedUser}
           onChange={(_event, newUser) => {
             console.log(newUser);

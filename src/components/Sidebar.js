@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useRef } from "react";
+
 import Filters from "./Filters";
 import { ReactComponent as Oid } from "../oid.svg";
 function Sidebar({
@@ -12,21 +13,45 @@ function Sidebar({
   addLabelFilterSelection,
   removeLabelFilterSelection,
   clickBehavior,
-  albumColor,
+  albumPrimaryColor,
+  albumSecondaryColor,
   albumEmbedUrl,
   linearGradient,
 }) {
+  const iframeHeight =
+    (filters && filters.length > 0) ||
+    (labelFilter && labelFilter.length > 0) ||
+    (curatorFilters && curatorFilters.length > 0)
+      ? 160
+      : 600;
+
+  const iframeRef = useRef(null);
+
   return (
     <div className="sidebar">
-      <svg className="logo" fill={albumColor}>
-        <Oid />
-      </svg>
-      <h1
-        className="title"
-        style={{ color: albumColor, fontFamily: "Sanchez-Regular" }}
-      >
-        &nbsp; &nbsp; &nbsp; &nbsp;Algo <br /> Rhythms
-      </h1>
+      <div className="logo-main">
+        <svg className="logo" fill={albumSecondaryColor}>
+          <Oid />
+        </svg>
+        <h1
+          className="title"
+          style={{ color: albumSecondaryColor, fontFamily: "Sanchez-Regular" }}
+        >
+          fck algos
+        </h1>
+      </div>
+      <div className="spotify-embed">
+        <iframe
+          src={albumEmbedUrl}
+          title="Spotify Embed"
+          width="300"
+          height={iframeHeight}
+          frameBorder="0"
+          allowfullscreen=""
+          allowTransparency="true"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        ></iframe>
+      </div>
       <Filters
         filters={filters}
         addGenreFiltersSelection={addGenreFiltersSelection}
@@ -37,28 +62,17 @@ function Sidebar({
         labelFilter={labelFilter}
         addLabelFilterSelection={addLabelFilterSelection}
         removeLabelFilterSelection={removeLabelFilterSelection}
-        albumColor={albumColor}
+        albumPrimaryColor={albumPrimaryColor}
+        albumSecondaryColor={albumSecondaryColor}
       />
       <div className="button">
         <button
-          style={{ backgroundImage: linearGradient }}
+          style={{ backgroundColor: albumSecondaryColor }}
           className="btn-grad"
           onClick={clickBehavior}
         >
-          Next
+          <span>next</span>
         </button>
-      </div>
-
-      <div className="spotify-embed">
-        <iframe
-          src={albumEmbedUrl}
-          title="Spotify Embed"
-          width="300"
-          height="380"
-          frameBorder="0"
-          allowfullscreen=""
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        ></iframe>
       </div>
     </div>
   );

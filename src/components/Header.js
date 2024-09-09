@@ -1,59 +1,52 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Search from "./Search";
-import axios from "axios";
-import { useLocation } from "react-router-dom";
+import SearchDropdownWithImages from "./Dropdown";
 
 function Header() {
-  const navigate = useNavigate();
+  const [userId, setUserId] = useState(null);
   const location = useLocation();
 
-  localStorage.setItem("location", location.pathname);
-  const handleLogout = () => {
-    localStorage.clear();
-    window.location.reload();
+  const handleLogin = () => {
+    window.location.href = "http://localhost:8000/login";
   };
-  useEffect(() => {
-    if (
-      !localStorage.getItem("user") &&
-      localStorage.getItem("user_spotify_token")
-    ) {
-      const fetchProfileData = async () => {
-        const profile_url = "http://localhost:8000/spotify_user_info";
-        const params = {
-          token: localStorage.getItem("user_spotify_token"),
-        };
-        const profile_data = await axios.get(profile_url, {
-          params,
-        });
 
-        localStorage.setItem("user", profile_data.data.display_name);
-        localStorage.setItem("user_id", profile_data.data.id);
-        localStorage.setItem("user_image_url", profile_data.data.image_url);
-      };
-      fetchProfileData();
+  const handleLogout = () => {
+    localStorage.removeItem("user_id");
+    setUserId(null);
+    window.location.replace(location.pathname);
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const userIdFromURL = params.get("user_id");
+    if (userIdFromURL) {
+      localStorage.setItem("user_id", userIdFromURL);
+      setUserId(userIdFromURL);
+    } else {
+      const storedUserId = localStorage.getItem("user_id");
+      if (storedUserId) {
+        setUserId(storedUserId);
+      }
     }
-  });
+  }, [location]);
+
   return (
     <div className="header">
-      <div className="header-content">
-        <Search />
-        <div className="navigation">
-          <nav>
-            <Link to="/">Home</Link> | <Link to="/profile">Profile</Link>
-          </nav>
-        </div>
+      <div className="about-us">
+        <a>about us</a>
+      </div>
+      <div className="search-box">
+        <SearchDropdownWithImages />
+      </div>
+      <div className="header-elements">
+        <Link to="/profile">profile</Link>
         <div className="login">
-          {" "}
-          {localStorage.getItem("user_spotify_token") ? (
-            <button onClick={handleLogout}> Logout</button>
+          {userId ? (
+            <div onClick={handleLogout}>logout</div>
           ) : (
-            <button onClick={() => navigate("/login")}> Login</button>
+            <div onClick={handleLogin}>login</div>
           )}
-        </div>
-        <div className="about-us">
-          <a>About us</a>
         </div>
       </div>
     </div>

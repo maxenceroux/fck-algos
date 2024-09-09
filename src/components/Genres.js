@@ -1,19 +1,13 @@
 import React from "react";
 import Chip from "@mui/material/Chip";
 
-function Genres({
-  styles,
-  addGenreFiltersSelection,
-
-  albumColor,
-}) {
+function Genres({ styles, addGenreFiltersSelection, albumColor }) {
   return (
     <div className="genres">
       {Object.keys(styles).map((value) => {
         return (
-          <div className="styles-card">
+          <div className="styles-card" key={styles[value]["style"]}>
             <Chip
-              key={styles[value]["style"]}
               size="small"
               label={styles[value]["style"]}
               sx={{

@@ -12,12 +12,13 @@ function Filters({
   labelFilter,
   addLabelFilterSelection,
   removeLabelFilterSelection,
-  albumColor,
+  albumPrimaryColor,
+  albumSecondaryColor,
 }) {
   return (
     <div className="filters-box">
       {filters && filters.length ? (
-        <p className="filter-wrapper">Styles</p>
+        <p className="filter-wrapper">styles</p>
       ) : (
         ""
       )}
@@ -25,10 +26,21 @@ function Filters({
         filters={filters}
         addGenreFiltersSelection={addGenreFiltersSelection}
         removeGenreFiltersSelection={removeGenreFiltersSelection}
-        albumColor={albumColor}
+        albumColor={albumPrimaryColor}
       />
+      {labelFilter !== "" ? <p className="filter-wrapper">label</p> : ""}
+      {labelFilter !== "" ? (
+        <LabelFilter
+          labelFilter={labelFilter}
+          addLabelFilterSelection={addLabelFilterSelection}
+          removeLabelFilterSelection={removeLabelFilterSelection}
+          albumColor={albumPrimaryColor}
+        />
+      ) : (
+        ""
+      )}
       {curatorFilters && curatorFilters.length ? (
-        <p className="filter-wrapper">Curators</p>
+        <p className="filter-wrapper recommended">recommended by</p>
       ) : (
         ""
       )}
@@ -36,19 +48,8 @@ function Filters({
         curatorFilters={curatorFilters}
         addCuratorFiltersSelection={addCuratorFiltersSelection}
         removeCuratorFiltersSelection={removeCuratorFiltersSelection}
-        albumColor={albumColor}
+        albumColor={albumPrimaryColor}
       />
-      {labelFilter !== "" ? <p className="filter-wrapper">Label</p> : ""}
-      {labelFilter !== "" ? (
-        <LabelFilter
-          labelFilter={labelFilter}
-          addLabelFilterSelection={addLabelFilterSelection}
-          removeLabelFilterSelection={removeLabelFilterSelection}
-          albumColor={albumColor}
-        />
-      ) : (
-        ""
-      )}
     </div>
   );
 }

@@ -9,7 +9,7 @@ function Curators({
 }) {
   return (
     <div className="curators">
-      <p className="recommended-by">curated by:</p>
+      <p className="recommended-by">recommended by:</p>
       {Object.keys(curators).map((value) => {
         return (
           <div className="curators-card">

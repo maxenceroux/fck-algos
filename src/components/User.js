@@ -7,14 +7,36 @@ import Switch from "@mui/material/Switch";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Header from "./Header";
+import { ReactComponent as Oid } from "../oid.svg";
+import Collection from "./Collection";
+
 function User({}) {
   const { id } = useParams();
   const [user, setUser] = useState({});
   const [isFollowing, setIsFollowing] = useState(false);
   const navigate = useNavigate();
+  const [bgColor, setBgColor] = useState("");
+
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  const handleMouseOver = () => {
+    setBgColor(getRandomColor());
+  };
+
+  const handleLogin = () => {
+    window.location.href = "http://localhost:8000/login";
+  };
+
   const handleChange = () => {
     if (!localStorage.getItem("user_id")) {
-      navigate("/login");
+      handleLogin();
     }
     const url = "http://localhost:8000/follow";
     const params = {
@@ -55,29 +77,60 @@ function User({}) {
         setIsFollowing(response.data);
       });
     };
-    if (user.id && localStorage.getItem("user_spotify_token")) {
+    if (user.id && localStorage.getItem("user_id")) {
       fetchFollow();
     }
   });
   return (
     <div className="user">
-      <header className="App-header">
-        <Header />
-      </header>
-      <p>hello {user.display_name}</p>
-      <img src={user.image_url} />
-      <FormGroup>
-        <FormControlLabel
-          control={
-            <Switch
-              name="friends"
-              onChange={handleChange}
-              checked={isFollowing}
-            />
+      <div className="header-logo">
+        <div
+          onClick={() => navigate("/")}
+          onMouseOver={handleMouseOver}
+          style={{
+            color: bgColor,
+          }}
+          className="logo-main"
+        >
+          <svg className="logo" fill="#d3d3d3">
+            <Oid fill={bgColor} />
+          </svg>
+          <h1 className="title" style={{ fontFamily: "Sanchez-Regular" }}>
+            fck algos
+          </h1>
+        </div>
+        <header className="App-header">
+          <Header className="header-user" />
+        </header>
+      </div>
+      <div className="user-info">
+        <img
+          src={
+            user.image_url ||
+            "https://upload.wikimedia.org/wikipedia/commons/8/84/Spotify_icon.svg"
           }
-          label="Follow?"
         />
-      </FormGroup>
+        <div className="user-info-texts">
+          <p className="user-name">{user.display_name}</p>
+          <div className="user-info-stats">
+            <p>{user.following_count} following </p>
+            <p>{user.follower_count} followers </p>
+            <p>{user.albums_count} albums saved</p>
+          </div>
+        </div>
+        <div
+          style={{ backgroundColor: bgColor }}
+          onClick={handleChange}
+          onMouseOver={handleMouseOver}
+          className={`follow-button ${
+            isFollowing ? "following" : "not-following"
+          }`}
+        >
+          {isFollowing ? "following" : "follow"}
+        </div>
+      </div>
+
+      <Collection userId={user.id} randomColor={bgColor} />
     </div>
   );
 }
