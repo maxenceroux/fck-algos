@@ -1,0 +1,366 @@
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20%,
+  60% {
+    transform: translateX(-10px);
+  }
+  40%,
+  80% {
+    transform: translateX(10px);
+  }
+}
+/* General Styles for Mobile Devices */
+@media (max-width: 768px) {
+  body {
+    font-size: 14px;
+    height: 100vh;
+  }
+
+  .App {
+    flex-direction: column;
+    /* height: auto; */
+    margin: 0px !important;
+  }
+
+  .App-header {
+    height: 0px;
+  }
+
+  .content {
+    padding: 0px;
+    margin-top: 0px;
+    justify-content: space-evenly;
+    height: 90%;
+    gap: 5px;
+  }
+  .genres {
+    width: 100%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .header {
+    flex-direction: column;
+    margin-top: 0px;
+    height: 0px;
+    align-items: center;
+    visibility: hidden;
+  }
+  .sidebar {
+    position: fixed;
+    top: 5%;
+    left: 101%;
+    width: 70%;
+    height: 90%;
+    z-index: 1001000;
+    background-color: black;
+    border-radius: 10px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    transition: left 0.3s ease; /* Smooth slide transition */
+  }
+  .sidebar.active {
+    left: 30%; /* When active, the sidebar is fully visible */
+  }
+  .spotify-embed {
+    display: none;
+  }
+  .result-page {
+    margin: 0px;
+    border-radius: 0px;
+  }
+
+  .header-elements {
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0;
+    text-align: center;
+  }
+
+  .header-elements a {
+    padding: 10px;
+    width: 100%;
+  }
+
+  .profile {
+    height: auto;
+  }
+
+  .profile .logo-main {
+    width: 50%;
+    margin-top: 20px;
+  }
+
+  .profile .header {
+    margin-top: 20px;
+    text-align: center;
+  }
+
+  .profile .input-users {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .profile .App-header {
+    width: 100%;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .spotify-embed {
+    margin: 10px;
+  }
+
+  .filters-box {
+    font-size: 18px;
+    margin-left: 10px;
+  }
+
+  .filters {
+    justify-content: center;
+  }
+
+  .album-item {
+    width: 100px;
+    height: 140px;
+    margin-bottom: 20px;
+  }
+  .album-item-text {
+    width: 100%;
+    font-size: 12px;
+  }
+
+  .album-item img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .album-info {
+    font-size: 16px;
+  }
+
+  .user-info {
+    width: auto;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    margin-top: 0px;
+    margin: 20px;
+
+    padding: 20px;
+  }
+
+  .user-info img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .user-info-texts {
+    font-size: 30px;
+  }
+
+  .user-info-stats {
+    font-size: 12px;
+  }
+
+  .albums {
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    padding-left: 20px;
+  }
+
+  .album-image-wrapper {
+    width: 100%;
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: center;
+  }
+
+  .album-image {
+    width: 250px;
+
+    height: 250px;
+  }
+
+  .header-logo {
+    justify-content: center;
+  }
+
+  .collection {
+    height: 98vh;
+    padding-bottom: 20px;
+  }
+
+  .sharing-wrapper {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .toggle-curators {
+    font-size: 14px;
+  }
+  .curators {
+    flex-direction: column;
+  }
+  .recommended-by {
+    /* margin-top: 20px; */
+    margin-bottom: 0px;
+    font-size: 14px;
+  }
+  #buttons-mobile {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100px;
+  }
+  .button {
+    /* width: 100vw; */
+    margin: 0px;
+    padding: 0px;
+    width: min-content;
+  }
+  .btn-grad {
+    background-color: black !important;
+    color: white !important;
+    width: 200px;
+    padding: 15px;
+  }
+
+  #next-button {
+    position: unset;
+    margin-top: 20px;
+  }
+  .plus {
+    position: unset;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    /* width: 100vw; */
+    display: flex;
+  }
+  .sign {
+    position: relative;
+  }
+  .logo-main {
+    margin: 0px;
+  }
+  .logo-main svg {
+    fill: black;
+    margin: 0px;
+    width: 30px;
+    height: 30px;
+  }
+  .title {
+    color: black !important;
+    font-size: 30px;
+  }
+
+  .mobile-header {
+    display: flex;
+    flex-direction: row;
+    height: 10%;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .all-curators {
+    top: 50vh;
+    left: 5%;
+    align-items: ce;
+    width: 90%;
+  }
+  .burger-menu {
+    flex-direction: column;
+    justify-content: space-between;
+    cursor: pointer;
+    width: 25px;
+    height: 20px;
+
+    color: black;
+  }
+
+  .burger-menu .line {
+    width: 100%;
+    height: 3px;
+    margin: 3px;
+    background-color: black;
+    transition: 0.3s;
+  }
+  #filter-icon {
+    width: 30px;
+    height: 30px;
+  }
+  #search-icon {
+    width: 30px;
+    height: 30px;
+  }
+  .sidebar-mobile {
+    position: fixed;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    top: 5%;
+    left: -100%; /* Hidden off-screen initially */
+    width: 70%;
+    height: 90%;
+    z-index: 1001000;
+    background-color: black;
+    border-radius: 10px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    transition: left 0.3s ease; /* Smooth slide transition */
+  }
+
+  .sidebar-mobile.active {
+    left: 0; /* When active, the sidebar is fully visible */
+  }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    width: max-content;
+    font-family: "Sanchez-Regular";
+    font-size: 30px;
+    margin: 20px;
+    gap: 20px;
+  }
+  .close-button {
+    font-size: 20px;
+  }
+  .sidebar .close-button {
+    text-align: start;
+    margin-left: 10px;
+    width: min-content;
+  }
+  .shake {
+    animation: shake 0.5s ease-in-out; /* Duration and timing function */
+    animation-iteration-count: 1; /* Number of times the shake happens */
+  }
+  .mobile {
+    visibility: visible;
+    position: fixed;
+    top: 10%;
+    width: 50%;
+    z-index: 1999999;
+  }
+  .mobile .input-users {
+    background-color: rgba(255, 255, 255, 0.75);
+  }
+  .mobile .users-item {
+    background-color: rgba(255, 255, 255, 0.75);
+  }
+  .mobile .users-list {
+    width: 215px !important;
+    margin: 0px;
+    align-items: flex-start;
+  }
+}

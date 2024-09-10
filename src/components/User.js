@@ -16,6 +16,7 @@ function User({}) {
   const [isFollowing, setIsFollowing] = useState(false);
   const navigate = useNavigate();
   const [bgColor, setBgColor] = useState("");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
@@ -51,6 +52,15 @@ function User({}) {
       .catch((error) => console.log(error));
   };
   useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      console.log(isMobile);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  useEffect(() => {
     const fetchUser = async () => {
       const params = { user_id: id };
       try {
@@ -81,6 +91,35 @@ function User({}) {
       fetchFollow();
     }
   });
+
+  useEffect(() => {
+    const logoMain = document.querySelector("#logo-main");
+    const mobileHeader = document.querySelector(".header-logo");
+    const searchIcon = document.querySelector("#search-icon");
+
+    if (isMobile && mobileHeader && logoMain && searchIcon) {
+      mobileHeader.appendChild(logoMain);
+      mobileHeader.appendChild(searchIcon);
+
+      searchIcon.addEventListener("click", handleSearchClick);
+
+      // Cleanup to remove the event listener when component is unmounted
+      return () => {
+        searchIcon.removeEventListener("click", handleSearchClick);
+      };
+    }
+  }, [isMobile]);
+  const handleSearchClick = () => {
+    const searchBox = document.querySelector(".search-box");
+    const overlay = document.querySelector(".overlay");
+    console.log("here");
+    searchBox.classList.add("mobile");
+    if (overlay.style.display === "block") {
+      overlay.style.display = "none";
+    } else {
+      overlay.style.display = "block";
+    }
+  };
   return (
     <div className="user">
       <div className="header-logo">

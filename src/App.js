@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import ReactDOM from "react-dom";
 import Album from "./components/Album";
 import Genres from "./components/Genres";
 import axios from "axios";
@@ -6,6 +7,7 @@ import Curators from "./components/Curators";
 import Modal from "./components/modal/Modal";
 import Sidebar from "./components/Sidebar";
 import "./App.css";
+import "./Mobile.css";
 
 import Header from "./components/Header";
 
@@ -24,9 +26,15 @@ function App() {
   const [linearGradient, setLinearGradient] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [showShareInput, setShowShareInput] = useState(false);
+  const [showBurgerMenu, setShowBurgerMenu] = useState(false);
+  const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [linearGradientButton, setLinearGradientButton] = useState([]);
   const [addedToCollection, setAddedToCollection] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
   const dropdownRef = useRef(null);
+  const burgerMenuRef = useRef(null);
+
   const inputRef = useRef(null);
   const addLabelFilter = (newLabelFilter) => {
     if (typeof labelFilter === "undefined") {
@@ -72,6 +80,44 @@ function App() {
       }
     }
   };
+  const handleBurgerClick = () => {
+    const overlay = document.querySelector(".overlay");
+    const sidebarMenu = document.querySelector(".sidebar-mobile");
+    setShowBurgerMenu(!showBurgerMenu);
+    if (overlay.style.display === "block") {
+      overlay.style.display = "none";
+    } else {
+      overlay.style.display = "block";
+    }
+    sidebarMenu.classList.toggle("active");
+  };
+  const handleFilterClick = () => {
+    const overlay = document.querySelector(".overlay");
+    const filterMenu = document.querySelector(".sidebar");
+    const filterIcon = document.querySelector("#filter-icon");
+
+    console.log(curatorsFilter);
+    console.log(filters);
+    console.log(labelFilter);
+
+    setShowFilterMenu((prevState) => !prevState);
+    overlay.style.display = showFilterMenu ? "none" : "block"; // Toggle overlay visibility
+    filterMenu.classList.toggle("active");
+    // if (
+    //   (curatorsFilter && curatorsFilter.length > 0) ||
+    //   (filters && filters.length > 0) ||
+    //   (labelFilter && labelFilter.length > 0)
+    // ) {
+    //   setShowFilterMenu((prevState) => !prevState);
+    //   overlay.style.display = showFilterMenu ? "none" : "block"; // Toggle overlay visibility
+    //   filterMenu.classList.toggle("active");
+    // } else {
+    //   filterIcon.classList.add("shake");
+    //   setTimeout(() => {
+    //     filterIcon.classList.remove("shake");
+    //   }, 500);
+    // }
+  };
   const handleShare = async () => {
     try {
       const data = {
@@ -110,6 +156,34 @@ function App() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownRef]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        burgerMenuRef.current &&
+        burgerMenuRef.current.classList.contains("active") &&
+        !burgerMenuRef.current.contains(event.target)
+      ) {
+        handleBurgerClick();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [burgerMenuRef, handleBurgerClick]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      console.log(isMobile);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (inputRef.current && !inputRef.current.contains(event.target)) {
@@ -174,6 +248,18 @@ function App() {
     fetchData();
   }, []);
 
+  const toggleModal = () => {
+    setModal((prev) => !prev);
+
+    const overlay = document.querySelector(".overlay");
+    const currentDisplay = window.getComputedStyle(overlay).display;
+
+    if (currentDisplay === "block") {
+      overlay.style.display = "none";
+    } else {
+      overlay.style.display = "block";
+    }
+  };
   const handleShareToFriends = () => {
     setShowShareInput(true);
     console.log(showShareInput);
@@ -245,12 +331,60 @@ function App() {
       setLinearGradient(linGrad);
       setLinearGradientButton(linGradBut);
     } else {
-      setModal(true);
+      toggleModal(true);
     }
   };
 
+  const handleSearchClick = () => {
+    const searchBox = document.querySelector(".search-box");
+    const overlay = document.querySelector(".overlay");
+    console.log("here");
+    searchBox.classList.add("mobile");
+    if (overlay.style.display === "block") {
+      overlay.style.display = "none";
+    } else {
+      overlay.style.display = "block";
+    }
+  };
+
+  useEffect(() => {
+    const nextButton = document.querySelector("#next-button");
+    const mainContent = document.querySelector("#buttons-mobile");
+    const logoMain = document.querySelector("#logo-main");
+    const mobileHeader = document.querySelector("#mobile-header");
+    const plusSign = document.querySelector("#plus");
+    const filterIcon = document.querySelector("#filter-icon");
+    const searchIcon = document.querySelector("#search-icon");
+
+    if (isMobile && nextButton && mainContent) {
+      mainContent.appendChild(nextButton);
+      mainContent.appendChild(plusSign);
+      mobileHeader.appendChild(logoMain);
+      mobileHeader.appendChild(searchIcon);
+      mobileHeader.appendChild(filterIcon);
+      filterIcon.addEventListener("click", handleFilterClick);
+      searchIcon.addEventListener("click", handleSearchClick);
+
+      // Cleanup to remove the event listener when component is unmounted
+      return () => {
+        filterIcon.removeEventListener("click", handleFilterClick);
+        searchIcon.removeEventListener("click", handleSearchClick);
+      };
+    }
+  }, [isMobile]);
   return (
     <div style={{ color: album.secondary_color }} className="App">
+      <div class="overlay"></div>
+      <div ref={burgerMenuRef} class="sidebar-mobile">
+        <div className="links">
+          <div className="link">about us</div>
+          <div className="link">profile</div>
+          <div className="link">log out</div>
+        </div>
+        <div className="close-button" onClick={handleBurgerClick}>
+          x
+        </div>
+      </div>
       <div className="page">
         <Sidebar
           filters={filters}
@@ -267,6 +401,10 @@ function App() {
           albumSecondaryColor={album.secondary_color}
           albumEmbedUrl={albumEmbedUrl}
           linearGradient={linearGradientButton}
+          showFilterMenu={showFilterMenu}
+          setShowFilterMenu={setShowFilterMenu}
+          setIsMobile={setIsMobile}
+          isMobile={isMobile}
         />
         <div className="result-page-wrapper">
           <div
@@ -278,12 +416,28 @@ function App() {
             <header className="App-header">
               <Header />
             </header>
-
-            <div className="content">
+            {isMobile ? (
+              <div id="mobile-header" className="mobile-header">
+                <div onClick={handleBurgerClick} className="burger-menu">
+                  <div class="line"></div>
+                  <div class="line"></div>
+                  <div class="line"></div>
+                </div>
+                <img
+                  onclick={handleFilterClick}
+                  id="filter-icon"
+                  src="/filter.png"
+                ></img>
+                <img id="search-icon" src="/search-icon.png"></img>
+              </div>
+            ) : (
+              ""
+            )}
+            <div id="main-content" className="content">
               {modal && (
                 <Modal
-                  setOpenModal={setModal}
-                  linearGradient={linearGradientButton}
+                  setOpenModal={toggleModal}
+                  linearGradient={album.secondary_color}
                 />
               )}
               <div className="bgd" />
@@ -298,22 +452,24 @@ function App() {
                 addCuratorFiltersSelection={addCuratorFilters}
                 albumColor={album.primary_color}
               />
-              <div className="plus">
-                <div
-                  onClick={() => setShowDropdown(!showDropdown)}
-                  className="sign"
-                >
-                  {showDropdown && (
-                    <ul ref={dropdownRef} className="dropdown-sort">
-                      <li onClick={handleSaveToCollection}>
-                        {!addedToCollection
-                          ? "add to collection"
-                          : "added to collection"}
-                      </li>
-                      <li onClick={handleShareToFriends}>share to friends</li>
-                    </ul>
-                  )}
-                  +
+              <div id="buttons-mobile">
+                <div id="plus" className="plus">
+                  <div
+                    onClick={() => setShowDropdown(!showDropdown)}
+                    className="sign"
+                  >
+                    {showDropdown && (
+                      <ul ref={dropdownRef} className="dropdown-sort">
+                        <li onClick={handleSaveToCollection}>
+                          {!addedToCollection
+                            ? "add to collection"
+                            : "added to collection"}
+                        </li>
+                        <li onClick={handleShareToFriends}>share to friends</li>
+                      </ul>
+                    )}
+                    +
+                  </div>
                 </div>
               </div>
               {showShareInput && (

@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 
 import Filters from "./Filters";
 import { ReactComponent as Oid } from "../oid.svg";
@@ -17,6 +17,10 @@ function Sidebar({
   albumSecondaryColor,
   albumEmbedUrl,
   linearGradient,
+  showFilterMenu,
+  setShowFilterMenu,
+  setIsMobile,
+  isMobile,
 }) {
   const iframeHeight =
     (filters && filters.length > 0) ||
@@ -26,10 +30,50 @@ function Sidebar({
       : 600;
 
   const iframeRef = useRef(null);
+  const filterMenuRef = useRef(null);
+  const handleFilterClick = () => {
+    const overlay = document.querySelector(".overlay");
+    const filterMenu = document.querySelector(".sidebar");
+    setShowFilterMenu(!showFilterMenu);
+    if (overlay.style.display === "block") {
+      overlay.style.display = "none";
+    } else {
+      overlay.style.display = "block";
+    }
+    filterMenu.classList.toggle("active");
+  };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      console.log(isMobile);
+    };
 
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        filterMenuRef.current &&
+        filterMenuRef.current.classList.contains("active") &&
+        !filterMenuRef.current.contains(event.target)
+      ) {
+        handleFilterClick();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [filterMenuRef, handleFilterClick]);
   return (
-    <div className="sidebar">
-      <div className="logo-main">
+    <div ref={filterMenuRef} className="sidebar">
+      <div onClick={handleFilterClick} className="close-button">
+        x
+      </div>
+      <div id="logo-main" className="logo-main">
         <svg className="logo" fill={albumSecondaryColor}>
           <Oid />
         </svg>
@@ -65,7 +109,7 @@ function Sidebar({
         albumPrimaryColor={albumPrimaryColor}
         albumSecondaryColor={albumSecondaryColor}
       />
-      <div className="button">
+      <div id="next-button" className="button">
         <button
           style={{ backgroundColor: albumSecondaryColor }}
           className="btn-grad"

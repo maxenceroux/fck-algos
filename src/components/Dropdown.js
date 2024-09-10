@@ -72,20 +72,18 @@ const SearchDropdownWithImages = () => {
           padding: "15px",
 
           border: "0px",
-
-          borderRadius: "10px",
         }}
       />
       {filteredData.length > 0 && (
         <ul
+          className="users-list"
           ref={dropdownRef} // Attach the ref to this element
           style={{
             listStyleType: "none",
             padding: 0,
             position: "absolute",
-            backgroundColor: "white",
             marginTop: "60px",
-            borderRadius: "10px",
+            // borderRadius: "10px",
 
             border: "1px",
             maxHeight: "200px",
@@ -103,9 +101,6 @@ const SearchDropdownWithImages = () => {
                 alignItems: "center",
                 padding: "10px",
                 height: "30px",
-                fontSize: "14px",
-                borderRadius: "10px",
-                margin: "5px",
               }}
               onClick={() => handleItemClick(item.id)} // Navigate on click
             >

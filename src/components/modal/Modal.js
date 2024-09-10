@@ -6,17 +6,17 @@ function Modal({ setOpenModal, linearGradient }) {
     <div className="modalBackground">
       <div className="modalContainer">
         <div className="body">
-          <p>No albums left to display, consider removing some filters! </p>
+          <p>no albums left to display, consider removing some filters! </p>
         </div>
         <div className="footer">
           <button
-            style={{ backgroundImage: linearGradient }}
+            style={{ backgroundColor: linearGradient }}
             onClick={() => {
               setOpenModal(false);
             }}
             id="cancelBtn"
           >
-            Got it!
+            got it!
           </button>
         </div>
       </div>
