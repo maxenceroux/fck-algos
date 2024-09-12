@@ -944,3 +944,13 @@ header {
       16 16,
     pointer;
 }
+
+.about-us-content {
+  margin: 30px;
+  width: 80%;
+  font-family: "Cotham";
+}
+.colored {
+  font-family: "Sanchez-Regular";
+  font-size: 18px;
+}

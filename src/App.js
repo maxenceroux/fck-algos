@@ -238,7 +238,6 @@ function App() {
         userID;
       const curator_data = await axios.get(curator_url);
       setCurators(curator_data.data);
-      console.log(curator_data.data);
       const linGrad =
         "linear-gradient(" +
         album_data.data.primary_color +

@@ -95,7 +95,7 @@ function MobileHeader({
       <div className="overlay"></div>
       <div ref={burgerMenuRef} className="sidebar-mobile">
         <div className="links">
-          <div className="link" onClick={() => navigate("/about")}>
+          <div className="link" onClick={() => navigate("/about-us")}>
             about us
           </div>
           <div onClick={() => navigate("/profile")} className="link">

@@ -490,4 +490,7 @@
   .sign .dropdown-sort {
     right: auto;
   }
+  .about-us-wrapper .logo-main {
+    margin: 40px;
+  }
 }
