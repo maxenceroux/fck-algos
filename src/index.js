@@ -10,6 +10,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginSuccessful from "./components/LoginSuccessful";
 import Following from "./components/Following";
 import Followers from "./components/Followers";
+import AboutUs from "./components/AboutUs";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -23,6 +24,7 @@ ReactDOM.render(
         <Route path="/login/success" element={<LoginSuccessful />}></Route>
         <Route path="/following" element={<Following />}></Route>
         <Route path="/followers" element={<Followers />}></Route>
+        <Route path="/about-us" element={<AboutUs />}></Route>
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

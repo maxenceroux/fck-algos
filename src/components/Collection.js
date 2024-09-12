@@ -152,7 +152,6 @@ function Collection({ userId, randomColor }) {
           }
         })}
         {loading && <p>Loading more albums...</p>}
-        {!hasMore && <p>No more albums to load</p>}
       </div>
     </div>
   );

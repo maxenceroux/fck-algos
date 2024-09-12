@@ -6,11 +6,20 @@ const SearchDropdownWithImages = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
   const [users, setUsers] = useState([]);
-
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const dropdownRef = useRef(null);
+  const inputRef = useRef(null);
   const handleItemClick = (userId) => {
     window.location.href = `/user/${userId}`; // Navigate and reload
   };
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   useEffect(() => {
     fetch("http://localhost:8000/users")
       .then((res) => res.json())
@@ -27,12 +36,16 @@ const SearchDropdownWithImages = () => {
       );
   }, []);
   useEffect(() => {
+    const overlay = document.querySelector(".overlay");
     if (searchTerm) {
+      overlay.style.display = "block";
+
       const results = users.filter((item) =>
         item.display_name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredData(results);
     } else {
+      overlay.style.display = "none";
       setFilteredData([]);
     }
   }, [searchTerm, users]);
@@ -43,6 +56,16 @@ const SearchDropdownWithImages = () => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setFilteredData([]); // Close the dropdown
         setSearchTerm("");
+        const searchBox = document.querySelector(".search-box");
+        const overlay = document.querySelector(".overlay");
+        searchBox.classList.remove("mobile");
+        if (isMobile) {
+          if (overlay.style.display === "block") {
+            overlay.style.display = "none";
+          } else {
+            overlay.style.display = "block";
+          }
+        }
       }
     };
 
@@ -51,6 +74,37 @@ const SearchDropdownWithImages = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownRef]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const searchBox = document.querySelector(".search-box");
+      if (searchBox.classList.contains("mobile")) {
+        if (
+          inputRef.current &&
+          !inputRef.current.contains(event.target) &&
+          isMobile
+        ) {
+          setFilteredData([]); // Close the dropdown
+          setSearchTerm("");
+          const searchBox = document.querySelector(".search-box");
+          const overlay = document.querySelector(".overlay");
+          searchBox.classList.remove("mobile");
+          if (isMobile) {
+            if (overlay.style.display === "block") {
+              overlay.style.display = "none";
+            } else {
+              overlay.style.display = "block";
+            }
+          }
+        }
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [inputRef]);
 
   return (
     <div
@@ -61,6 +115,7 @@ const SearchDropdownWithImages = () => {
       }}
     >
       <input
+        ref={inputRef}
         type="text"
         className="input-users"
         value={searchTerm}
@@ -89,7 +144,7 @@ const SearchDropdownWithImages = () => {
             maxHeight: "200px",
             width: "490px",
             overflowY: "auto", // Adds scrolling if needed
-            zIndex: 10, // Ensure the dropdown appears above other elements
+            zIndex: 1000000, // Ensure the dropdown appears above other elements
           }}
         >
           {filteredData.map((item) => (

@@ -12,6 +12,9 @@ function Sidebar({
   labelFilter,
   addLabelFilterSelection,
   removeLabelFilterSelection,
+  yearFilter,
+  addYearFilterSelection,
+  removeYearFilterSelection,
   clickBehavior,
   albumPrimaryColor,
   albumSecondaryColor,
@@ -25,9 +28,10 @@ function Sidebar({
   const iframeHeight =
     (filters && filters.length > 0) ||
     (labelFilter && labelFilter.length > 0) ||
-    (curatorFilters && curatorFilters.length > 0)
-      ? 160
-      : 600;
+    (curatorFilters && curatorFilters.length > 0) ||
+    (yearFilter && yearFilter.length > 0)
+      ? "20vh"
+      : "60vh";
 
   const iframeRef = useRef(null);
   const filterMenuRef = useRef(null);
@@ -45,7 +49,6 @@ function Sidebar({
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
-      console.log(isMobile);
     };
 
     window.addEventListener("resize", handleResize);
@@ -70,26 +73,33 @@ function Sidebar({
   }, [filterMenuRef, handleFilterClick]);
   return (
     <div ref={filterMenuRef} className="sidebar">
-      <div onClick={handleFilterClick} className="close-button">
-        x
-      </div>
-      <div id="logo-main" className="logo-main">
-        <svg className="logo" fill={albumSecondaryColor}>
-          <Oid />
-        </svg>
-        <h1
-          className="title"
-          style={{ color: albumSecondaryColor, fontFamily: "Sanchez-Regular" }}
-        >
-          fck algos
-        </h1>
-      </div>
+      {isMobile ? (
+        <div onClick={handleFilterClick} className="close-button">
+          x
+        </div>
+      ) : (
+        <div id="logo-main" className="logo-main">
+          <svg className="logo" fill={albumSecondaryColor}>
+            <Oid />
+          </svg>
+          <h1
+            className="title"
+            style={{
+              color: albumSecondaryColor,
+              fontFamily: "Sanchez-Regular",
+            }}
+          >
+            FCK ALGOS
+          </h1>
+        </div>
+      )}
+
       <div className="spotify-embed">
         <iframe
           src={albumEmbedUrl}
           title="Spotify Embed"
           width="300"
-          height={iframeHeight}
+          style={{ height: iframeHeight }}
           frameBorder="0"
           allowfullscreen=""
           allowTransparency="true"
@@ -106,6 +116,9 @@ function Sidebar({
         labelFilter={labelFilter}
         addLabelFilterSelection={addLabelFilterSelection}
         removeLabelFilterSelection={removeLabelFilterSelection}
+        yearFilter={yearFilter}
+        addYearFilterSelection={addYearFilterSelection}
+        removeYearFilterSelection={removeYearFilterSelection}
         albumPrimaryColor={albumPrimaryColor}
         albumSecondaryColor={albumSecondaryColor}
       />

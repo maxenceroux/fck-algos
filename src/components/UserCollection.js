@@ -50,11 +50,9 @@ function UserCollection({ userId, randomColor, name }) {
     if (userId) {
       fetchUsers();
     }
-    console.log(users);
   }, [userId, fetchUsers]);
 
   const handleAlbumClick = (userId) => {
-    console.log(userId);
     navigate(`/user/${userId}`);
   };
 
@@ -113,7 +111,6 @@ function UserCollection({ userId, randomColor, name }) {
           }
         })}
         {loading && <p>Loading more albums...</p>}
-        {!hasMore && <p>No more albums to load</p>}
       </div>
     </div>
   );

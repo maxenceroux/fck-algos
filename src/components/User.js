@@ -1,16 +1,19 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Switch from "@mui/material/Switch";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import MobileHeader from "./HeaderMobile";
+import SearchDropdownWithImages from "./Dropdown";
 import Header from "./Header";
 import { ReactComponent as Oid } from "../oid.svg";
 import Collection from "./Collection";
 
 function User({}) {
+  const burgerMenuRef = useRef(null);
   const { id } = useParams();
   const [user, setUser] = useState({});
   const [isFollowing, setIsFollowing] = useState(false);
@@ -29,6 +32,7 @@ function User({}) {
 
   const handleMouseOver = () => {
     setBgColor(getRandomColor());
+    console.log(bgColor);
   };
 
   const handleLogin = () => {
@@ -92,56 +96,66 @@ function User({}) {
     }
   });
 
-  useEffect(() => {
-    const logoMain = document.querySelector("#logo-main");
-    const mobileHeader = document.querySelector(".header-logo");
-    const searchIcon = document.querySelector("#search-icon");
+  // useEffect(() => {
+  //   const logoMain = document.querySelector("#logo-main");
+  //   const mobileHeader = document.querySelector(".header-logo");
+  //   const searchIcon = document.querySelector("#search-icon");
 
-    if (isMobile && mobileHeader && logoMain && searchIcon) {
-      mobileHeader.appendChild(logoMain);
-      mobileHeader.appendChild(searchIcon);
+  //   if (isMobile && mobileHeader && logoMain && searchIcon) {
+  //     mobileHeader.appendChild(logoMain);
+  //     mobileHeader.appendChild(searchIcon);
 
-      searchIcon.addEventListener("click", handleSearchClick);
+  //     searchIcon.addEventListener("click", handleSearchClick);
 
-      // Cleanup to remove the event listener when component is unmounted
-      return () => {
-        searchIcon.removeEventListener("click", handleSearchClick);
-      };
-    }
-  }, [isMobile]);
-  const handleSearchClick = () => {
-    const searchBox = document.querySelector(".search-box");
-    const overlay = document.querySelector(".overlay");
-    console.log("here");
-    searchBox.classList.add("mobile");
-    if (overlay.style.display === "block") {
-      overlay.style.display = "none";
-    } else {
-      overlay.style.display = "block";
-    }
-  };
+  //     // Cleanup to remove the event listener when component is unmounted
+  //     return () => {
+  //       searchIcon.removeEventListener("click", handleSearchClick);
+  //     };
+  //   }
+  // }, [isMobile]);
+  // const handleSearchClick = () => {
+  //   const searchBox = document.querySelector(".search-box");
+  //   const overlay = document.querySelector(".overlay");
+  //   console.log("here");
+  //   searchBox.classList.add("mobile");
+  //   if (overlay.style.display === "block") {
+  //     overlay.style.display = "none";
+  //   } else {
+  //     overlay.style.display = "block";
+  //   }
+  // };
   return (
     <div className="user">
-      <div className="header-logo">
-        <div
-          onClick={() => navigate("/")}
-          onMouseOver={handleMouseOver}
-          style={{
-            color: bgColor,
-          }}
-          className="logo-main"
-        >
-          <svg className="logo" fill="#d3d3d3">
-            <Oid fill={bgColor} />
-          </svg>
-          <h1 className="title" style={{ fontFamily: "Sanchez-Regular" }}>
-            fck algos
-          </h1>
+      <div class="overlay"></div>
+      {isMobile ? (
+        <div>
+          <MobileHeader randomColor={bgColor} />
+          <div className="search-box">
+            <SearchDropdownWithImages />
+          </div>
         </div>
-        <header className="App-header">
-          <Header className="header-user" />
-        </header>
-      </div>
+      ) : (
+        <div className="header-logo">
+          <div
+            onClick={() => navigate("/")}
+            onMouseOver={handleMouseOver}
+            style={{
+              color: bgColor,
+            }}
+            className="logo-main"
+          >
+            <svg className="logo" fill="#d3d3d3">
+              <Oid fill={bgColor} />
+            </svg>
+            <h1 className="title" style={{ fontFamily: "Sanchez-Regular" }}>
+              FCK ALGOS
+            </h1>
+          </div>
+          <header className="App-header">
+            <Header className="header-user" />
+          </header>
+        </div>
+      )}
       <div className="user-info">
         <img
           src={
@@ -168,7 +182,6 @@ function User({}) {
           {isFollowing ? "following" : "follow"}
         </div>
       </div>
-
       <Collection userId={user.id} randomColor={bgColor} />
     </div>
   );

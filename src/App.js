@@ -6,6 +6,7 @@ import axios from "axios";
 import Curators from "./components/Curators";
 import Modal from "./components/modal/Modal";
 import Sidebar from "./components/Sidebar";
+import MobileHeader from "./components/HeaderMobile";
 import "./App.css";
 import "./Mobile.css";
 
@@ -22,6 +23,7 @@ function App() {
   const [curators, setCurators] = useState([]);
   const [curatorsFilter, setCuratorsFilters] = useState([]);
   const [labelFilter, setLabelFilter] = useState("");
+  const [yearFilter, setYearFilter] = useState("");
   const [albumEmbedUrl, setAlbumEmbedUrl] = useState([]);
   const [linearGradient, setLinearGradient] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -46,6 +48,17 @@ function App() {
   };
   const removeLabelFilter = (newLabelFilter) => {
     setLabelFilter("");
+  };
+  const addYearFilter = (newYearFilter) => {
+    if (typeof yearFilter === "undefined") {
+      setYearFilter(newYearFilter);
+    }
+    if (typeof yearFilter !== "undefined") {
+      setYearFilter(newYearFilter);
+    }
+  };
+  const removeYearFilter = (newYearFilter) => {
+    setYearFilter("");
   };
   const addGenreFilters = (newFilter) => {
     if (!filters.includes(newFilter)) {
@@ -95,10 +108,6 @@ function App() {
     const overlay = document.querySelector(".overlay");
     const filterMenu = document.querySelector(".sidebar");
     const filterIcon = document.querySelector("#filter-icon");
-
-    console.log(curatorsFilter);
-    console.log(filters);
-    console.log(labelFilter);
 
     setShowFilterMenu((prevState) => !prevState);
     overlay.style.display = showFilterMenu ? "none" : "block"; // Toggle overlay visibility
@@ -178,7 +187,6 @@ function App() {
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
-      console.log(isMobile);
     };
 
     window.addEventListener("resize", handleResize);
@@ -224,9 +232,13 @@ function App() {
       const style_data = await axios.get(style_url);
       setStyles(style_data.data["style"]);
       const curator_url =
-        "http://localhost:8000/album_curators?album_id=" + album_data.data.id;
+        "http://localhost:8000/album_curators?album_id=" +
+        album_data.data.id +
+        "&user_id=" +
+        userID;
       const curator_data = await axios.get(curator_url);
       setCurators(curator_data.data);
+      console.log(curator_data.data);
       const linGrad =
         "linear-gradient(" +
         album_data.data.primary_color +
@@ -242,8 +254,6 @@ function App() {
 
       setLinearGradient(linGrad);
       setLinearGradientButton(linGradBut);
-      console.log(album.primary_color);
-      console.log(album.secondary_color);
     };
     fetchData();
   }, []);
@@ -291,6 +301,7 @@ function App() {
       styles: filters.join(","),
       curator: curatorsFilter.join(","),
       label: labelFilter,
+      year: yearFilter,
       current_album_id: album.id,
       user_id: userID,
     };
@@ -312,7 +323,10 @@ function App() {
       const style_data = await axios.get(style_url);
       setStyles(style_data.data["style"]);
       const curator_url =
-        "http://localhost:8000/album_curators?album_id=" + album_data.data.id;
+        "http://localhost:8000/album_curators?album_id=" +
+        album_data.data.id +
+        "&user_id=" +
+        userID;
       const curator_data = await axios.get(curator_url);
       setCurators(curator_data.data);
 
@@ -335,56 +349,22 @@ function App() {
     }
   };
 
-  const handleSearchClick = () => {
-    const searchBox = document.querySelector(".search-box");
-    const overlay = document.querySelector(".overlay");
-    console.log("here");
-    searchBox.classList.add("mobile");
-    if (overlay.style.display === "block") {
-      overlay.style.display = "none";
-    } else {
-      overlay.style.display = "block";
-    }
-  };
-
   useEffect(() => {
     const nextButton = document.querySelector("#next-button");
     const mainContent = document.querySelector("#buttons-mobile");
-    const logoMain = document.querySelector("#logo-main");
-    const mobileHeader = document.querySelector("#mobile-header");
     const plusSign = document.querySelector("#plus");
-    const filterIcon = document.querySelector("#filter-icon");
-    const searchIcon = document.querySelector("#search-icon");
 
     if (isMobile && nextButton && mainContent) {
-      mainContent.appendChild(nextButton);
       mainContent.appendChild(plusSign);
-      mobileHeader.appendChild(logoMain);
-      mobileHeader.appendChild(searchIcon);
-      mobileHeader.appendChild(filterIcon);
-      filterIcon.addEventListener("click", handleFilterClick);
-      searchIcon.addEventListener("click", handleSearchClick);
+      mainContent.appendChild(nextButton);
 
       // Cleanup to remove the event listener when component is unmounted
-      return () => {
-        filterIcon.removeEventListener("click", handleFilterClick);
-        searchIcon.removeEventListener("click", handleSearchClick);
-      };
+      return () => {};
     }
   }, [isMobile]);
   return (
     <div style={{ color: album.secondary_color }} className="App">
       <div class="overlay"></div>
-      <div ref={burgerMenuRef} class="sidebar-mobile">
-        <div className="links">
-          <div className="link">about us</div>
-          <div className="link">profile</div>
-          <div className="link">log out</div>
-        </div>
-        <div className="close-button" onClick={handleBurgerClick}>
-          x
-        </div>
-      </div>
       <div className="page">
         <Sidebar
           filters={filters}
@@ -396,6 +376,9 @@ function App() {
           labelFilter={labelFilter}
           addLabelFilterSelection={addLabelFilter}
           removeLabelFilterSelection={removeLabelFilter}
+          yearFilter={yearFilter}
+          addYearFilterSelection={addYearFilter}
+          removeYearFilter={removeYearFilter}
           clickBehavior={handleClick}
           albumPrimaryColor={album.primary_color}
           albumSecondaryColor={album.secondary_color}
@@ -417,19 +400,11 @@ function App() {
               <Header />
             </header>
             {isMobile ? (
-              <div id="mobile-header" className="mobile-header">
-                <div onClick={handleBurgerClick} className="burger-menu">
-                  <div class="line"></div>
-                  <div class="line"></div>
-                  <div class="line"></div>
-                </div>
-                <img
-                  onclick={handleFilterClick}
-                  id="filter-icon"
-                  src="/filter.png"
-                ></img>
-                <img id="search-icon" src="/search-icon.png"></img>
-              </div>
+              <MobileHeader
+                curatorFilters={curatorsFilter}
+                filters={filters}
+                curatorsFilter={curatorsFilter}
+              />
             ) : (
               ""
             )}
@@ -441,16 +416,22 @@ function App() {
                 />
               )}
               <div className="bgd" />
-              <Album album={album} addLabelFilterSelection={addLabelFilter} />
+              <Album
+                album={album}
+                addLabelFilterSelection={addLabelFilter}
+                addYearFilterSelection={addYearFilter}
+              />
               <Genres
                 styles={styles}
                 addGenreFiltersSelection={addGenreFilters}
                 albumColor={album.primary_color}
+                genreFilters={filters}
               />
               <Curators
                 curators={curators}
                 addCuratorFiltersSelection={addCuratorFilters}
                 albumColor={album.primary_color}
+                curatorsFilter={curatorsFilter}
               />
               <div id="buttons-mobile">
                 <div id="plus" className="plus">

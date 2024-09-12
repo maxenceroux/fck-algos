@@ -2,6 +2,7 @@ import React from "react";
 import GenreFilters from "./GenreFilters";
 import CuratorFilters from "./CuratorFilters";
 import LabelFilter from "./LabelFilter";
+import YearFilter from "./YearFilter";
 function Filters({
   filters,
   addGenreFiltersSelection,
@@ -12,6 +13,9 @@ function Filters({
   labelFilter,
   addLabelFilterSelection,
   removeLabelFilterSelection,
+  yearFilter,
+  addYearFilterSelection,
+  removeYearFilterSelection,
   albumPrimaryColor,
   albumSecondaryColor,
 }) {
@@ -34,6 +38,17 @@ function Filters({
           labelFilter={labelFilter}
           addLabelFilterSelection={addLabelFilterSelection}
           removeLabelFilterSelection={removeLabelFilterSelection}
+          albumColor={albumPrimaryColor}
+        />
+      ) : (
+        ""
+      )}
+      {yearFilter !== "" ? <p className="filter-wrapper">year</p> : ""}
+      {yearFilter !== "" ? (
+        <YearFilter
+          yearFilter={yearFilter}
+          addYearFilterSelection={addYearFilterSelection}
+          removeYearFilterSelection={removeYearFilterSelection}
           albumColor={albumPrimaryColor}
         />
       ) : (

@@ -10,6 +10,8 @@ import axios from "axios";
 import { ReactComponent as Oid } from "../oid.svg";
 import { Link } from "react-router-dom";
 import UserCollection from "./UserCollection";
+import MobileHeader from "./HeaderMobile";
+import SearchDropdownWithImages from "./Dropdown";
 
 function Profile({}) {
   const [user, setUser] = useState();
@@ -18,7 +20,7 @@ function Profile({}) {
   const [description, setDescription] = useState("");
   const [oldDescription, setOldDescription] = useState("");
   const [hasDescription, setHasDescription] = useState(false);
-
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const [bgColor, setBgColor] = useState("");
   const navigate = useNavigate();
   const getRandomColor = () => {
@@ -104,32 +106,51 @@ function Profile({}) {
       }
     }
   }, []);
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+      console.log(isMobile);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div className="profile">
-      <div className="header-logo">
-        <div
-          onClick={() => navigate("/")}
-          onMouseOver={handleMouseOver}
-          style={{
-            color: bgColor,
-          }}
-          className="logo-main"
-        >
-          <svg className="logo" fill="#d3d3d3">
-            <Oid fill={bgColor} />
-          </svg>
-          <h1 className="title" style={{ fontFamily: "Sanchez-Regular" }}>
-            fck algos
-          </h1>
+      <div className="overlay"></div>
+      {isMobile ? (
+        <div>
+          <MobileHeader randomColor={bgColor} />
+          <div className="search-box">
+            <SearchDropdownWithImages />
+          </div>
         </div>
-        <header className="App-header">
-          <Header className="header-user" />
-        </header>
-      </div>
-      <div className="profile-settings">
-        {user ? (
-          <div>
+      ) : (
+        <div className="header-logo">
+          <div
+            onClick={() => navigate("/")}
+            onMouseOver={handleMouseOver}
+            style={{
+              color: bgColor,
+            }}
+            className="logo-main"
+          >
+            <svg className="logo" fill="#d3d3d3">
+              <Oid fill={bgColor} />
+            </svg>
+            <h1 className="title" style={{ fontFamily: "Sanchez-Regular" }}>
+              FCK ALGOS
+            </h1>
+          </div>
+          <header className="App-header">
+            <Header className="header-user" />
+          </header>
+        </div>
+      )}
+      {user ? (
+        <div className="profile-wrapper">
+          <div className="profile-settings">
             <div className="user-info">
               <img
                 src={
@@ -157,28 +178,29 @@ function Profile({}) {
                   {hasAllowedFetching ? "stop sharing" : "start sharing"}
                 </div>
                 <div className="sharing-info">
-                  When you enable sharing, fck-algos will access your saved
-                  Spotify albums and share them with other fck-algos users. Your
+                  When you enable sharing, fck algos will access your saved
+                  Spotify albums and share them with other fck algos users. Your
                   collection will be available shortly after enabling this
                   feature, depending on its size.{" "}
                 </div>
               </div>
             </div>
           </div>
-        ) : (
-          <p> Log in to access your profile settings </p>
-        )}
-      </div>
-      <UserCollection
-        userId={localStorage.getItem("user_id")}
-        randomColor={bgColor}
-        name="followers"
-      />
-      <UserCollection
-        userId={localStorage.getItem("user_id")}
-        randomColor={bgColor}
-        name="following"
-      />
+
+          <UserCollection
+            userId={localStorage.getItem("user_id")}
+            randomColor={bgColor}
+            name="followers"
+          />
+          <UserCollection
+            userId={localStorage.getItem("user_id")}
+            randomColor={bgColor}
+            name="following"
+          />
+        </div>
+      ) : (
+        <p> Log in to access your profile settings </p>
+      )}
     </div>
   );
 }

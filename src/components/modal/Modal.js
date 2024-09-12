@@ -6,7 +6,10 @@ function Modal({ setOpenModal, linearGradient }) {
     <div className="modalBackground">
       <div className="modalContainer">
         <div className="body">
-          <p>no albums left to display, consider removing some filters! </p>
+          <p>
+            no albums left to display, consider removing some filters or
+            following new users!{" "}
+          </p>
         </div>
         <div className="footer">
           <button

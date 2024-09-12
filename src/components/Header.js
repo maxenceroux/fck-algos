@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Search from "./Search";
 import SearchDropdownWithImages from "./Dropdown";
 
 function Header() {
   const [userId, setUserId] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const handleLogin = () => {
     window.location.href = "http://localhost:8000/login";
@@ -34,7 +35,7 @@ function Header() {
   return (
     <div className="header">
       <div className="about-us">
-        <a>about us</a>
+        <a onClick={() => navigate("/about-us")}>about us</a>
       </div>
       <div className="search-box">
         <SearchDropdownWithImages />
