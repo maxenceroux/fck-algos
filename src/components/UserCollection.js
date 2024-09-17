@@ -1,18 +1,17 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
 
 function UserCollection({ userId, randomColor, name }) {
   const [users, setUsers] = useState([]);
-  const [offset, setOffset] = useState(0);
+
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [showDropdown, setShowDropdown] = useState(false); // New state to toggle dropdown
   const dropdownRef = useRef(null);
-  const observer = useRef();
+
   const navigate = useNavigate();
-  const location = useLocation();
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -31,11 +30,14 @@ function UserCollection({ userId, randomColor, name }) {
     if (loading || !hasMore) return;
     setLoading(true);
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/${name}`, {
-        params: {
-          user_id: userId,
-        },
-      });
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API_URL}/${name}`,
+        {
+          params: {
+            user_id: userId,
+          },
+        }
+      );
 
       setUsers(data);
     } catch (error) {

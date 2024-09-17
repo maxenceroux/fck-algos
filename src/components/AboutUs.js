@@ -10,6 +10,7 @@ import SearchDropdownWithImages from "./Dropdown";
 import Header from "./Header";
 import { ReactComponent as Oid } from "../oid.svg";
 import Collection from "./Collection";
+import ReactGA from "react-ga4";
 
 function AboutUs({}) {
   const getRandomColor = () => {
@@ -38,6 +39,9 @@ function AboutUs({}) {
     setHovered(false); // Set hover state to false when mouse leaves
   };
 
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+  }, []);
   return (
     <div className="about-us-wrapper">
       <div

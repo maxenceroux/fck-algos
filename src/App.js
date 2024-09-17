@@ -1,9 +1,9 @@
 import { useEffect, useState, useRef } from "react";
-import ReactDOM from "react-dom";
 import Album from "./components/Album";
 import Genres from "./components/Genres";
 import axios from "axios";
 import Curators from "./components/Curators";
+import ReactGA from "react-ga4";
 import Modal from "./components/modal/Modal";
 import Sidebar from "./components/Sidebar";
 import MobileHeader from "./components/HeaderMobile";
@@ -13,6 +13,7 @@ import "./Mobile.css";
 import Header from "./components/Header";
 
 function App() {
+  ReactGA.initialize(process.env.REACT_APP_GA_TRACKING_ID);
   const [album, setAlbum] = useState([]);
 
   const [styles, setStyles] = useState([]);
@@ -143,6 +144,10 @@ function App() {
         `${process.env.REACT_APP_API_URL}/album_rec`,
         data
       );
+      ReactGA.event({
+        category: "user",
+        action: "shareToFriend",
+      });
 
       console.log("Album recommendation sent:", response.data);
       setShowShareInput(false);
@@ -153,6 +158,9 @@ function App() {
       setShowShareInput(false);
     }
   };
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+  }, []);
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -206,7 +214,6 @@ function App() {
   }, [inputRef]);
   useEffect(() => {
     const fetchData = async () => {
-      
       const album_url = `${process.env.REACT_APP_API_URL}/random_album`;
       var userID = -1;
       if (localStorage.getItem("user_id")) {
@@ -228,7 +235,7 @@ function App() {
       setAlbum(album_data.data);
       console.log(album_data.data);
       const style_url =
-      `${process.env.REACT_APP_API_URL}/album_style_genre?album_id=` +
+        `${process.env.REACT_APP_API_URL}/album_style_genre?album_id=` +
         album_data.data.id;
       const style_data = await axios.get(style_url);
       setStyles(style_data.data["style"]);
@@ -277,7 +284,10 @@ function App() {
   const handleSaveToCollection = async () => {
     const url = `${process.env.REACT_APP_API_URL}/album`;
     const userId = localStorage.getItem("user_id");
-
+    ReactGA.event({
+      category: "user",
+      action: "addToCollection",
+    });
     if (album.id && userId) {
       try {
         // Use query parameters directly in the URL
@@ -308,9 +318,12 @@ function App() {
       current_album_id: album.id,
       user_id: userID,
     };
-    const album_data = await axios.get(`${process.env.REACT_APP_API_URL}/random_album`, {
-      params,
-    });
+    const album_data = await axios.get(
+      `${process.env.REACT_APP_API_URL}/random_album`,
+      {
+        params,
+      }
+    );
     if (album_data.data) {
       setAlbum(album_data.data);
       setAddedToCollection(false);
@@ -321,12 +334,12 @@ function App() {
         "?utm_source=generator&theme=0";
       setAlbumEmbedUrl(album_embed_url);
       const style_url =
-      `${process.env.REACT_APP_API_URL}/album_style_genre?album_id=` +
+        `${process.env.REACT_APP_API_URL}/album_style_genre?album_id=` +
         album_data.data.id;
       const style_data = await axios.get(style_url);
       setStyles(style_data.data["style"]);
       const curator_url =
-      `${process.env.REACT_APP_API_URL}/album_curators?album_id=` +
+        `${process.env.REACT_APP_API_URL}/album_curators?album_id=` +
         album_data.data.id +
         "&user_id=" +
         userID;
@@ -404,7 +417,7 @@ function App() {
             </header>
             {isMobile ? (
               <MobileHeader
-                curatorFilters={curatorsFilter}
+                curatorsFilter={curatorsFilter}
                 filters={filters}
                 labelFilter={labelFilter}
                 yearFilter={yearFilter}

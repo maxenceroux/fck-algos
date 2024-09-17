@@ -94,7 +94,12 @@ function MobileHeader({
 
   // Helper function to check if filters are not empty
   const isAnyFilterActive = () => {
-    return curatorsFilter || filters || labelFilter || yearFilter;
+    return (
+      (curatorsFilter && curatorsFilter.length > 0) ||
+      (filters && filters.length > 0) ||
+      (labelFilter && labelFilter.length > 0) ||
+      (yearFilter && yearFilter.length > 0)
+    );
   };
 
   return (

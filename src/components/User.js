@@ -1,26 +1,27 @@
 import React from "react";
-import { useEffect, useState, useRef } from "react";
-import { Navigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import Switch from "@mui/material/Switch";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
+
 import MobileHeader from "./HeaderMobile";
 import SearchDropdownWithImages from "./Dropdown";
 import Header from "./Header";
 import { ReactComponent as Oid } from "../oid.svg";
 import Collection from "./Collection";
 
-function User({}) {
-  const burgerMenuRef = useRef(null);
+import ReactGA from "react-ga4";
+
+function User() {
   const { id } = useParams();
   const [user, setUser] = useState({});
   const [isFollowing, setIsFollowing] = useState(false);
   const navigate = useNavigate();
   const [bgColor, setBgColor] = useState("");
   const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
-
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+  }, []);
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
     let color = "#";
@@ -43,6 +44,10 @@ function User({}) {
     if (!localStorage.getItem("user_id")) {
       handleLogin();
     }
+    ReactGA.event({
+      category: "user",
+      action: "followUser",
+    });
     const url = `${process.env.REACT_APP_API_URL}/follow`;
     const params = {
       follower_id: localStorage.getItem("user_id"),
@@ -68,9 +73,12 @@ function User({}) {
     const fetchUser = async () => {
       const params = { user_id: id };
       try {
-        const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/user_info`, {
-          params,
-        });
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_API_URL}/user_info`,
+          {
+            params,
+          }
+        );
         setUser(data);
       } catch (err) {
         console.error(err);

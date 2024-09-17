@@ -1,17 +1,13 @@
 import React from "react";
 import Header from "./Header";
 import { useEffect, useState } from "react";
-import Switch from "@mui/material/Switch";
-import FormGroup from "@mui/material/FormGroup";
 import { useNavigate } from "react-router-dom";
-import { TextField, Button } from "@mui/material";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import axios from "axios";
 import { ReactComponent as Oid } from "../oid.svg";
-import { Link } from "react-router-dom";
 import UserCollection from "./UserCollection";
 import MobileHeader from "./HeaderMobile";
 import SearchDropdownWithImages from "./Dropdown";
+import ReactGA from "react-ga4";
 
 function Profile({}) {
   const [user, setUser] = useState();
@@ -37,6 +33,10 @@ function Profile({}) {
   };
 
   const handleChange = () => {
+    ReactGA.event({
+      category: "user",
+      action: "acceptSharing",
+    });
     const url_allow = `${process.env.REACT_APP_API_URL}/allow_fetching`;
     console.log(localStorage.getItem("user_id"));
     console.log(localStorage.getItem("user_spotify_token"));
@@ -49,9 +49,9 @@ function Profile({}) {
         setHasAllowedFetching(response.data);
       })
       .catch((error) => console.log(error));
-    console.log(hasAllowedFetching)
+    console.log(hasAllowedFetching);
     if (!hasAllowedFetching) {
-      console.log("here")
+      console.log("here");
       const url = `${process.env.REACT_APP_API_URL}/saved_albums`;
       const params = {
         user_id: localStorage.getItem("user_id"),
@@ -83,7 +83,9 @@ function Profile({}) {
     var x = document.getElementById("edit");
     x.style.display = "none";
   };
-
+  useEffect(() => {
+    ReactGA.send({ hitType: "pageview", page: window.location.pathname });
+  }, []);
   useEffect(() => {
     if (localStorage.getItem("user_id")) {
       const loggedInUser = localStorage.getItem("user");
