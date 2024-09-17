@@ -16,7 +16,7 @@
 @media (max-width: 900px) {
   body {
     font-size: 14px;
-    height: 100vh;
+    height: 100dvh;
   }
 
   .App {
@@ -195,7 +195,7 @@
   }
 
   .collection {
-    max-height: 97vh;
+    max-height: 97dvh;
     height: auto !important;
     padding-bottom: 20px;
   }
@@ -278,7 +278,7 @@
   }
 
   .all-curators {
-    top: 50vh;
+    top: 50dvh;
     left: 2.5%;
     width: 95%;
   }
@@ -293,6 +293,10 @@
   }
   .curator-infos {
     width: 90px;
+  }
+  .curator-filter {
+    width: 95px;
+    padding: 3px;
   }
   .burger-menu .line {
     width: 100%;
