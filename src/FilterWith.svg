@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5.0 -10.0 110.0 135.0">
+ <path d="m4.168 4.168h91.664v33.332h-8.332v-25h-75v25h-8.332z" fill-rule="evenodd"/>
+ <path d="m29.168 54.168h8.332v33.332h8.332v8.332h-16.664z" fill-rule="evenodd"/>
+ <path d="m54.168 87.5h-8.3359v-8.332h8.3359z" fill-rule="evenodd"/>
+ <path d="m70.832 54.168v25h-16.664v-8.3359h8.332v-16.664z" fill-rule="evenodd"/>
+ <path d="m79.168 45.832v8.3359h-8.3359v-8.3359z" fill-rule="evenodd"/>
+ <path d="m20.832 45.832v8.3359h8.3359v-8.3359z" fill-rule="evenodd"/>
+ <path d="m87.5 37.5v8.332h-8.332v-8.332z" fill-rule="evenodd"/>
+ <path d="m12.5 37.5v8.332h8.332v-8.332z" fill-rule="evenodd"/>
+
+ <!-- Red-filled circle in the top right -->
+ <circle cx="90" cy="8" r="15" fill="red"/>
+</svg>
+ 

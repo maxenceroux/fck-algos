@@ -13,7 +13,7 @@
   }
 }
 /* General Styles for Mobile Devices */
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   body {
     font-size: 14px;
     height: 100vh;
@@ -27,6 +27,9 @@
 
   .App-header {
     height: 0px;
+  }
+  .input-users {
+    z-index: 0;
   }
 
   .content {

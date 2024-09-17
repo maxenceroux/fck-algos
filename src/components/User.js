@@ -19,7 +19,7 @@ function User({}) {
   const [isFollowing, setIsFollowing] = useState(false);
   const navigate = useNavigate();
   const [bgColor, setBgColor] = useState("");
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
 
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
@@ -36,14 +36,14 @@ function User({}) {
   };
 
   const handleLogin = () => {
-    window.location.href = "http://localhost:8000/login";
+    window.location.href = `${process.env.REACT_APP_API_URL}/login`;
   };
 
   const handleChange = () => {
     if (!localStorage.getItem("user_id")) {
       handleLogin();
     }
-    const url = "http://localhost:8000/follow";
+    const url = `${process.env.REACT_APP_API_URL}/follow`;
     const params = {
       follower_id: localStorage.getItem("user_id"),
       following_id: user.id,
@@ -57,7 +57,7 @@ function User({}) {
   };
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 900);
       console.log(isMobile);
     };
 
@@ -68,7 +68,7 @@ function User({}) {
     const fetchUser = async () => {
       const params = { user_id: id };
       try {
-        const { data } = await axios.get(`http://localhost:8000/user_info`, {
+        const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/user_info`, {
           params,
         });
         setUser(data);
@@ -81,7 +81,7 @@ function User({}) {
   }, []);
   useEffect(() => {
     const fetchFollow = async () => {
-      const url = "http://localhost:8000/follow";
+      const url = `${process.env.REACT_APP_API_URL}/follow`;
       const params = {
         follower_id: localStorage.getItem("user_id"),
         following_id: user.id,

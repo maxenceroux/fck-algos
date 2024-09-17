@@ -20,7 +20,7 @@ function Profile({}) {
   const [description, setDescription] = useState("");
   const [oldDescription, setOldDescription] = useState("");
   const [hasDescription, setHasDescription] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
   const [bgColor, setBgColor] = useState("");
   const navigate = useNavigate();
   const getRandomColor = () => {
@@ -37,7 +37,7 @@ function Profile({}) {
   };
 
   const handleChange = () => {
-    const url_allow = "http://localhost:8000/allow_fetching";
+    const url_allow = `${process.env.REACT_APP_API_URL}/allow_fetching`;
     console.log(localStorage.getItem("user_id"));
     console.log(localStorage.getItem("user_spotify_token"));
     const params_allow = {
@@ -49,8 +49,10 @@ function Profile({}) {
         setHasAllowedFetching(response.data);
       })
       .catch((error) => console.log(error));
+    console.log(hasAllowedFetching)
     if (!hasAllowedFetching) {
-      const url = "http://localhost:8000/saved_albums";
+      console.log("here")
+      const url = `${process.env.REACT_APP_API_URL}/saved_albums`;
       const params = {
         user_id: localStorage.getItem("user_id"),
       };
@@ -67,7 +69,7 @@ function Profile({}) {
     setDescription(oldDescription);
   };
   const saveDescription = () => {
-    const url_description = "http://localhost:8000/description";
+    const url_description = `${process.env.REACT_APP_API_URL}/description`;
     const params = {
       user_id: localStorage.getItem("user_id"),
       description: description,
@@ -87,7 +89,7 @@ function Profile({}) {
       const loggedInUser = localStorage.getItem("user");
       const loggedInUserURL = localStorage.getItem("user_image_url");
 
-      const userURL = "http://localhost:8000/user_info";
+      const userURL = `${process.env.REACT_APP_API_URL}/user_info`;
       const userId = localStorage.getItem("user_id");
       const params = {
         user_id: userId,
@@ -108,7 +110,7 @@ function Profile({}) {
   }, []);
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 900);
       console.log(isMobile);
     };
 
@@ -199,7 +201,7 @@ function Profile({}) {
           />
         </div>
       ) : (
-        <p> Log in to access your profile settings </p>
+        <p className="login"> Log in to access your profile settings </p>
       )}
     </div>
   );

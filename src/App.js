@@ -32,7 +32,7 @@ function App() {
   const [showFilterMenu, setShowFilterMenu] = useState(false);
   const [linearGradientButton, setLinearGradientButton] = useState([]);
   const [addedToCollection, setAddedToCollection] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
 
   const dropdownRef = useRef(null);
   const burgerMenuRef = useRef(null);
@@ -140,7 +140,7 @@ function App() {
       };
       console.log(data);
       const response = await axios.post(
-        "http://localhost:8000/album_rec",
+        `${process.env.REACT_APP_API_URL}/album_rec`,
         data
       );
 
@@ -186,7 +186,7 @@ function App() {
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 900);
     };
 
     window.addEventListener("resize", handleResize);
@@ -206,7 +206,8 @@ function App() {
   }, [inputRef]);
   useEffect(() => {
     const fetchData = async () => {
-      const album_url = "http://localhost:8000/random_album";
+      
+      const album_url = `${process.env.REACT_APP_API_URL}/random_album`;
       var userID = -1;
       if (localStorage.getItem("user_id")) {
         userID = localStorage.getItem("user_id");
@@ -227,12 +228,12 @@ function App() {
       setAlbum(album_data.data);
       console.log(album_data.data);
       const style_url =
-        "http://localhost:8000/album_style_genre?album_id=" +
+      `${process.env.REACT_APP_API_URL}/album_style_genre?album_id=` +
         album_data.data.id;
       const style_data = await axios.get(style_url);
       setStyles(style_data.data["style"]);
       const curator_url =
-        "http://localhost:8000/album_curators?album_id=" +
+        `${process.env.REACT_APP_API_URL}/album_curators?album_id=` +
         album_data.data.id +
         "&user_id=" +
         userID;
@@ -274,7 +275,7 @@ function App() {
     console.log(showShareInput);
   };
   const handleSaveToCollection = async () => {
-    const url = "http://localhost:8000/album";
+    const url = `${process.env.REACT_APP_API_URL}/album`;
     const userId = localStorage.getItem("user_id");
 
     if (album.id && userId) {
@@ -288,6 +289,9 @@ function App() {
       } catch (error) {
         console.error("Error saving album to collection:", error);
       }
+    }
+    if (!userId) {
+      window.location.href = `${process.env.REACT_APP_API_URL}/login`;
     }
   };
   const handleClick = async () => {
@@ -304,7 +308,7 @@ function App() {
       current_album_id: album.id,
       user_id: userID,
     };
-    const album_data = await axios.get("http://localhost:8000/random_album", {
+    const album_data = await axios.get(`${process.env.REACT_APP_API_URL}/random_album`, {
       params,
     });
     if (album_data.data) {
@@ -317,12 +321,12 @@ function App() {
         "?utm_source=generator&theme=0";
       setAlbumEmbedUrl(album_embed_url);
       const style_url =
-        "http://localhost:8000/album_style_genre?album_id=" +
+      `${process.env.REACT_APP_API_URL}/album_style_genre?album_id=` +
         album_data.data.id;
       const style_data = await axios.get(style_url);
       setStyles(style_data.data["style"]);
       const curator_url =
-        "http://localhost:8000/album_curators?album_id=" +
+      `${process.env.REACT_APP_API_URL}/album_curators?album_id=` +
         album_data.data.id +
         "&user_id=" +
         userID;
@@ -377,7 +381,7 @@ function App() {
           removeLabelFilterSelection={removeLabelFilter}
           yearFilter={yearFilter}
           addYearFilterSelection={addYearFilter}
-          removeYearFilter={removeYearFilter}
+          removeYearFilterSelection={removeYearFilter}
           clickBehavior={handleClick}
           albumPrimaryColor={album.primary_color}
           albumSecondaryColor={album.secondary_color}
@@ -402,7 +406,8 @@ function App() {
               <MobileHeader
                 curatorFilters={curatorsFilter}
                 filters={filters}
-                curatorsFilter={curatorsFilter}
+                labelFilter={labelFilter}
+                yearFilter={yearFilter}
               />
             ) : (
               ""

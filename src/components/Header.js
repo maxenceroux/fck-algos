@@ -9,7 +9,7 @@ function Header() {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    window.location.href = "http://localhost:8000/login";
+    window.location.href = `${process.env.REACT_APP_API_URL}/login`;
   };
 
   const handleLogout = () => {

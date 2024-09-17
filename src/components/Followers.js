@@ -7,7 +7,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 function Followers({}) {
   const [followers, setFollowers] = useState();
   const handleChange = (event, user) => {
-    const url = "http://localhost:8000/follow";
+    const url = `${process.env.REACT_APP_API_URL}/follow`;
     const params = {
       follower_id: localStorage.getItem("user_id"),
       following_id: user.id,
@@ -19,7 +19,7 @@ function Followers({}) {
     window.location.reload();
   };
   useEffect(() => {
-    const url = "http://localhost:8000/followers";
+    const url = `${process.env.REACT_APP_API_URL}/followers`;
     const userId = localStorage.getItem("user_id");
     const params = { following_id: userId };
     if (!followers) {

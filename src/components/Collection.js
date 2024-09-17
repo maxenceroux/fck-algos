@@ -35,7 +35,7 @@ function Collection({ userId, randomColor }) {
     if (loading || !hasMore) return;
     setLoading(true);
     try {
-      const { data } = await axios.get("http://localhost:8000/albums", {
+      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/albums`, {
         params: {
           user_id: userId,
           offset,

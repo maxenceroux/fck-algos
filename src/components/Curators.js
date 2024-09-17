@@ -22,7 +22,7 @@ function Curators({
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const handleLogin = () => {
-    window.location.href = "http://localhost:8000/login";
+    window.location.href = `${process.env.REACT_APP_API_URL}/login`;
   };
   const handleChange = (curator_id) => {
     if (!localStorage.getItem("user_id")) {
@@ -30,7 +30,7 @@ function Curators({
       return;
     }
 
-    const url = "http://localhost:8000/follow";
+    const url = `${process.env.REACT_APP_API_URL}/follow`;
     const params = {
       follower_id: localStorage.getItem("user_id"),
       following_id: curator_id,

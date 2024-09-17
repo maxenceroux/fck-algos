@@ -2,12 +2,14 @@ import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ReactComponent as Oid } from "../oid.svg";
 import { ReactComponent as FilterSVG } from "../Filter.svg";
+import { ReactComponent as FilterWithSVG } from "../FilterWith.svg";
 import { ReactComponent as SearchSVG } from "../Search.svg";
 
 function MobileHeader({
   curatorsFilter = null,
   filters = null,
   labelFilter = null,
+  yearFilter = null,
   randomColor = "",
 }) {
   const [userId, setUserId] = useState(null);
@@ -67,7 +69,7 @@ function MobileHeader({
   }, [burgerMenuRef]);
 
   const handleLogin = () => {
-    window.location.href = "http://localhost:8000/login";
+    window.location.href = `${process.env.REACT_APP_API_URL}/login`;
   };
 
   const handleLogout = () => {
@@ -89,6 +91,11 @@ function MobileHeader({
       }
     }
   }, [location]);
+
+  // Helper function to check if filters are not empty
+  const isAnyFilterActive = () => {
+    return curatorsFilter || filters || labelFilter || yearFilter;
+  };
 
   return (
     <div id="mobile-header" className="mobile-header">
@@ -141,7 +148,7 @@ function MobileHeader({
         id="filter-icon"
         className="filter-icon header-logo"
       >
-        <FilterSVG />
+        {isAnyFilterActive() ? <FilterWithSVG /> : <FilterSVG />}
       </svg>
       <svg
         onClick={handleSearchClick}

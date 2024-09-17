@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function Following({}) {
   const [following, setFollowing] = useState();
   useEffect(() => {
-    const url = "http://localhost:8000/following";
+    const url = `${process.env.REACT_APP_API_URL}/following`;
     const userId = localStorage.getItem("user_id");
     const params = { follower_id: userId };
     if (!following) {

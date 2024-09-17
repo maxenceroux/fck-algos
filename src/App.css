@@ -954,3 +954,8 @@ header {
   font-family: "Sanchez-Regular";
   font-size: 18px;
 }
+
+.login {
+  margin: 30px;
+  font-size: 20px;
+}

@@ -6,7 +6,7 @@ const SearchDropdownWithImages = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [error, setError] = useState(null);
   const [users, setUsers] = useState([]);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
   const handleItemClick = (userId) => {
@@ -14,14 +14,14 @@ const SearchDropdownWithImages = () => {
   };
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
+      setIsMobile(window.innerWidth < 900);
     };
 
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
   useEffect(() => {
-    fetch("http://localhost:8000/users")
+    fetch(`${process.env.REACT_APP_API_URL}/users`)
       .then((res) => res.json())
       .then(
         (result) => {
@@ -81,7 +81,7 @@ const SearchDropdownWithImages = () => {
       if (searchBox.classList.contains("mobile")) {
         if (
           inputRef.current &&
-          !inputRef.current.contains(event.target) &&
+          !dropdownRef.current.contains(event.target) &&
           isMobile
         ) {
           setFilteredData([]); // Close the dropdown

@@ -56,7 +56,7 @@ function LoginSuccessful({}) {
         getToken();
       }
       const fetchProfileData = () => {
-        const profile_url = "http://localhost:8000/spotify_user_info";
+        const profile_url = `${process.env.REACT_APP_API_URL}/spotify_user_info`;
         const params = {
           token: localStorage.getItem("user_spotify_token"),
         };
@@ -78,7 +78,7 @@ function LoginSuccessful({}) {
         fetchProfileData();
       }
       const updateToken = () => {
-        const url = "http://localhost:8000/user_spotify_token";
+        const url = `${process.env.REACT_APP_API_URL}/user_spotify_token`;
         const data = {
           user_id: localStorage.getItem("user_id"),
           token: localStorage.getItem("user_spotify_token"),
