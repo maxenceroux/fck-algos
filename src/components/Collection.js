@@ -7,11 +7,12 @@ function Collection({ userId, randomColor }) {
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
-  const [showDropdown, setShowDropdown] = useState(false); // New state to toggle dropdown
+  const [showDropdown, setShowDropdown] = useState(false); // State to toggle dropdown
   const dropdownRef = useRef(null);
   const observer = useRef();
 
   const location = useLocation();
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -24,25 +25,30 @@ function Collection({ userId, randomColor }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [dropdownRef]);
+
   const getSortOrderFromUrl = () => {
     const params = new URLSearchParams(location.search);
     return params.get("sortOrder") || "random"; // Default sort order is "random"
   };
 
   const [sortOrder, setSortOrder] = useState(getSortOrderFromUrl());
+
   // Function to fetch albums
   const fetchAlbums = useCallback(async () => {
     if (loading || !hasMore) return;
     setLoading(true);
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_API_URL}/albums`, {
-        params: {
-          user_id: userId,
-          offset,
-          limit: 50,
-          sort: sortOrder,
-        },
-      });
+      const { data } = await axios.get(
+        `${process.env.REACT_APP_API_URL}/albums`,
+        {
+          params: {
+            user_id: userId,
+            offset,
+            limit: 50,
+            sort: sortOrder,
+          },
+        }
+      );
       if (data.length < 50) {
         setHasMore(false); // No more albums to load
       }
@@ -53,15 +59,16 @@ function Collection({ userId, randomColor }) {
     } finally {
       setLoading(false);
     }
-  }, [userId, offset, hasMore, loading]);
+  }, [userId, offset, hasMore, loading, sortOrder]);
 
-  // Load albums when the component mounts
+  // Trigger the initial load of albums when component mounts
   useEffect(() => {
-    if (userId) {
-      fetchAlbums();
+    if (userId && !albums.length) {
+      fetchAlbums(); // Load the first batch of albums
     }
-  }, [userId, fetchAlbums]);
+  }, [userId, fetchAlbums, albums.length]);
 
+  // Infinite scroll functionality
   const lastAlbumElementRef = useCallback(
     (node) => {
       if (loading) return;
@@ -70,8 +77,7 @@ function Collection({ userId, randomColor }) {
       observer.current = new IntersectionObserver(
         (entries) => {
           if (entries[0].isIntersecting && hasMore) {
-            console.log("intersecting");
-            fetchAlbums();
+            fetchAlbums(); // Fetch more albums when the last album is visible
           }
         },
         { threshold: 1, rootMargin: "300px" } // Adjust this to your needs
@@ -84,14 +90,15 @@ function Collection({ userId, randomColor }) {
 
   const handleAlbumClick = (url) => {
     const concatenatedUrl = `https://open.spotify.com/album/${url}`; // Concatenate album name as a query parameter
-
     window.open(concatenatedUrl, "_blank"); // Opens the URL in a new tab
   };
+
   const handleSortChange = (sortValue) => {
     setSortOrder(sortValue);
     setShowDropdown(false);
     window.location.href = `/user/${userId}?sortOrder=${sortValue}`;
   };
+
   return (
     <div className="collection">
       <div className="albums-filter">
