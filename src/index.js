@@ -10,6 +10,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import LoginSuccessful from "./components/LoginSuccessful";
 import Following from "./components/Following";
 import Followers from "./components/Followers";
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+
 import AboutUs from "./components/AboutUs";
 
 ReactDOM.render(
@@ -34,4 +36,5 @@ ReactDOM.render(
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+serviceWorkerRegistration.register();
 reportWebVitals();
