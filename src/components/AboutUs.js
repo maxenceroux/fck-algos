@@ -7,6 +7,7 @@ import { ReactComponent as Oid } from "../oid.svg";
 import { ReactComponent as Email } from "../Email.svg";
 import { ReactComponent as Github } from "../Github.svg";
 import { ReactComponent as Share } from "../Share.svg";
+import { ReactComponent as Radio } from "../Radio.svg";
 
 import ReactGA from "react-ga4";
 
@@ -390,6 +391,11 @@ function AboutUs({}) {
         <a href="mailto:?subject=Check out FCK ALGOS&body=Hey!%0D%0A%0D%0ASomeone wants you to take a tour of FCK ALGOS, a music rec platform!%0D%0A%0D%0AVisit here: https://fck-algos.com">
           <Share className="about-us-logo share" fill={bgColor} />
         </a>
+        <Radio
+          onClick={() => window.open("https://raxdio.com")}
+          className="about-us-logo radio"
+          fill={bgColor}
+        />
       </div>
     </div>
   );
