@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="-5.0 -10.0 110.0 135.0">
+ <path d="m12.5 16.668h75v8.332h8.332v50h-8.332v-41.668h-8.332v-8.332h-58.336v8.332h-8.332v41.668h-8.332v-50h8.332z" fill-rule="evenodd"/>
+ <path d="m12.5 75h75v8.332h-75z" fill-rule="evenodd"/>
+ <path d="m29.168 41.668h-8.3359v-8.3359h8.3359z" fill-rule="evenodd"/>
+ <path d="m37.5 50h-8.332v-8.332h8.332z" fill-rule="evenodd"/>
+ <path d="m62.5 58.332h-25v-8.332h25z" fill-rule="evenodd"/>
+ <path d="m70.832 50h-8.332v-8.332h8.332z" fill-rule="evenodd"/>
+ <path d="m79.168 41.668h-8.3359v-8.3359h8.3359z" fill-rule="evenodd"/>
+</svg>

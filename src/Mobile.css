@@ -500,4 +500,9 @@
   .about-us-wrapper .logo-main {
     margin: 40px;
   }
+  .close-search {
+    display: block;
+    position: absolute;
+    right: 3%;
+  }
 }

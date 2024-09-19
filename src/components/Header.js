@@ -11,7 +11,12 @@ function Header() {
   const handleLogin = () => {
     window.location.href = `${process.env.REACT_APP_API_URL}/login`;
   };
-
+  const handleCloseSearch = () => {
+    const searchBox = document.querySelector(".search-box");
+    const overlay = document.querySelector(".overlay");
+    searchBox.classList.remove("mobile");
+    overlay.style.display = "none";
+  };
   const handleLogout = () => {
     localStorage.removeItem("user_id");
     setUserId(null);
@@ -39,6 +44,9 @@ function Header() {
       </div>
       <div className="search-box">
         <SearchDropdownWithImages />
+        <div onClick={() => handleCloseSearch()} className="close-search">
+          x
+        </div>
       </div>
       <div className="header-elements">
         <Link to="/profile">profile</Link>

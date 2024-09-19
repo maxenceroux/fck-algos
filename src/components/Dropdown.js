@@ -7,11 +7,14 @@ const SearchDropdownWithImages = () => {
   const [error, setError] = useState(null);
   const [users, setUsers] = useState([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 900);
+  const [hasFetchedUsers, setHasFetchedUsers] = useState(false); // Track if users are fetched
   const dropdownRef = useRef(null);
   const inputRef = useRef(null);
+
   const handleItemClick = (userId) => {
     window.location.href = `/user/${userId}`; // Navigate and reload
   };
+
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 900);
@@ -20,35 +23,46 @@ const SearchDropdownWithImages = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/users`)
-      .then((res) => res.json())
-      .then(
-        (result) => {
-          setIsLoaded(true);
-          setUsers(result);
-        },
 
-        (error) => {
-          setIsLoaded(true);
-          setError(error);
-        }
-      );
-  }, []);
+  const fetchUsers = () => {
+    if (!hasFetchedUsers) {
+      fetch(`${process.env.REACT_APP_API_URL}/users`)
+        .then((res) => res.json())
+        .then(
+          (result) => {
+            setIsLoaded(true);
+            setUsers(result);
+            setHasFetchedUsers(true); // Ensure it only fetches once
+          },
+          (error) => {
+            setIsLoaded(true);
+            setError(error);
+          }
+        );
+    }
+  };
+
+  // Filter users based on search term
   useEffect(() => {
-    const overlay = document.querySelector(".overlay");
     if (searchTerm) {
-      overlay.style.display = "block";
-
       const results = users.filter((item) =>
         item.display_name.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredData(results);
     } else {
-      overlay.style.display = "none";
-      setFilteredData([]);
+      setFilteredData(users); // Show all users if searchTerm is empty
     }
   }, [searchTerm, users]);
+
+  // Handle overlay visibility
+  useEffect(() => {
+    const overlay = document.querySelector(".overlay");
+    if (filteredData.length > 0) {
+      overlay.style.display = "block";
+    } else {
+      overlay.style.display = "none";
+    }
+  }, [filteredData]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -57,15 +71,7 @@ const SearchDropdownWithImages = () => {
         setFilteredData([]); // Close the dropdown
         setSearchTerm("");
         const searchBox = document.querySelector(".search-box");
-        const overlay = document.querySelector(".overlay");
         searchBox.classList.remove("mobile");
-        if (isMobile) {
-          if (overlay.style.display === "block") {
-            overlay.style.display = "none";
-          } else {
-            overlay.style.display = "block";
-          }
-        }
       }
     };
 
@@ -75,43 +81,12 @@ const SearchDropdownWithImages = () => {
     };
   }, [dropdownRef]);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      const searchBox = document.querySelector(".search-box");
-      if (searchBox.classList.contains("mobile")) {
-        if (
-          inputRef.current &&
-          !dropdownRef.current.contains(event.target) &&
-          isMobile
-        ) {
-          setFilteredData([]); // Close the dropdown
-          setSearchTerm("");
-          const searchBox = document.querySelector(".search-box");
-          const overlay = document.querySelector(".overlay");
-          searchBox.classList.remove("mobile");
-          if (isMobile) {
-            if (overlay.style.display === "block") {
-              overlay.style.display = "none";
-            } else {
-              overlay.style.display = "block";
-            }
-          }
-        }
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [inputRef]);
-
   return (
     <div
       style={{
         width: "490px",
-
         display: "flex",
+        position: "relative", // Needed for the absolute positioning of the dropdown
       }}
     >
       <input
@@ -120,12 +95,16 @@ const SearchDropdownWithImages = () => {
         className="input-users"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
+        onClick={() => {
+          fetchUsers(); // Fetch users when clicking the input
+          if (!searchTerm) {
+            setFilteredData(users); // Show all users when clicking on the search input
+          }
+        }}
         placeholder="search users"
         style={{
           width: "100%",
-
           padding: "15px",
-
           border: "0px",
         }}
       />
@@ -138,13 +117,12 @@ const SearchDropdownWithImages = () => {
             padding: 0,
             position: "absolute",
             marginTop: "60px",
-            // borderRadius: "10px",
-
-            border: "1px",
+            border: "1px solid #ccc",
+            backgroundColor: "#fff",
             maxHeight: "200px",
             width: "490px",
             overflowY: "auto", // Adds scrolling if needed
-            zIndex: 1000000, // Ensure the dropdown appears above other elements
+            zIndex: 1000, // Ensure the dropdown appears above other elements
           }}
         >
           {filteredData.map((item) => (
@@ -155,7 +133,7 @@ const SearchDropdownWithImages = () => {
                 display: "flex",
                 alignItems: "center",
                 padding: "10px",
-                height: "30px",
+                cursor: "pointer",
               }}
               onClick={() => handleItemClick(item.id)} // Navigate on click
             >
@@ -170,7 +148,7 @@ const SearchDropdownWithImages = () => {
                   width: "25px",
                   height: "25px",
                   marginRight: "10px",
-                  borderRadius: "100px",
+                  borderRadius: "50%",
                 }}
               />
               <span>{item.display_name}</span>
