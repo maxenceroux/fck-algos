@@ -239,7 +239,7 @@
 
   #next-button {
     position: unset;
-    margin-top: 20px;
+    /* margin-top: 20px; */
   }
   .plus {
     position: unset;
