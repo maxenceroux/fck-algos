@@ -439,8 +439,10 @@ function App() {
                 addYearFilterSelection={addYearFilter}
               />
               <Genres
+                filters={filters}
                 styles={styles}
                 addGenreFiltersSelection={addGenreFilters}
+                removeGenreFiltersSelection={removeGenreFilters}
                 albumColor={album.primary_color}
                 genreFilters={filters}
               />

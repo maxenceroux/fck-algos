@@ -3,20 +3,25 @@ import Chip from "@mui/material/Chip";
 
 function Genres({
   styles,
+  filters,
   addGenreFiltersSelection,
+  removeGenreFiltersSelection,
   albumColor,
   genreFilters,
 }) {
   return (
     <div className="genres">
       {Object.keys(styles).map((value) => {
+        const styleName = styles[value]["style"];
+        const isFiltered = filters.includes(styleName);
+
         return (
-          <div className="styles-card" key={styles[value]["style"]}>
+          <div className="styles-card" key={styleName}>
             <Chip
               size="small"
-              label={styles[value]["style"]}
+              label={styleName}
               sx={{
-                bgcolor: genreFilters.includes(styles[value]["style"])
+                bgcolor: genreFilters.includes(styleName)
                   ? "white"
                   : albumColor,
                 color: "black",
@@ -28,7 +33,13 @@ function Genres({
                   backgroundColor: "white",
                 },
               }}
-              onClick={() => addGenreFiltersSelection(styles[value]["style"])}
+              onClick={() => addGenreFiltersSelection(styleName)}
+              // Conditionally add onDelete if the style is in filters
+              onDelete={
+                isFiltered
+                  ? () => removeGenreFiltersSelection(styleName)
+                  : undefined
+              }
             />
           </div>
         );
